@@ -1,0 +1,69 @@
+<section class="login-container">
+  <div class="container">
+    <h2>Login to your Account</h2>
+    <p>Welcome back! Select the below login methods</p>
+    <div class="login-form-container">
+      <div class="login-form-content">
+        <form (submit)="onSubmit($event)">
+          <div class="email-input-cont">
+            <label>Email id / username</label>
+            @if (loginForm.email().touched() && loginForm.email().invalid()) {
+              <ul class="error">
+                @for (error of loginForm.email().errors(); track error) {
+                  <li>{{ error.message }}</li>
+                }
+              </ul>
+            }
+            <input
+              type="email"
+              [formField]="loginForm.email"
+              placeholder="Enter email / username"
+            />
+          </div>
+          <div class="password-input-cont">
+            <label>Password</label>
+            @if (loginForm.password().touched() && loginForm.password().invalid()) {
+              <ul class="error">
+                @for (error of loginForm.password().errors(); track error) {
+                  <li>{{ error.message }}</li>
+                }
+              </ul>
+            }
+            <input type="password" [formField]="loginForm.password" placeholder="Enter password" />
+          </div>
+        </form>
+
+        <div class="other-btns">
+          <div class="remember-me">
+            <input type="checkbox" id="check" />
+            <label for="check">Remember me</label>
+          </div>
+          <a href="#">Forgot Password?</a>
+        </div>
+        <button class="login-btn">Login</button>
+        <div class="other-login">
+          <div class="other-login-text">
+            <h3>Or login with</h3>
+          </div>
+          <div class="other-login-ways">
+            <a href="#">
+              <img src="/images/google-login.png" alt="other-login" />
+            </a>
+            <a href="#">
+              <img src="/images/facebook-login.png" alt="other-login" />
+            </a>
+            <a href="#">
+              <img src="/images/linkedin-login.png" alt="other-login" />
+            </a>
+          </div>
+          <div class="no-account">
+            <p>Don't have an account? <a href="#">Register</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="login-image">
+        <img src="/images/login-image.png" alt="image" />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,184 @@
+header {
+  max-width: 100vw;
+  padding: 20px 50px;
+  .header-cont {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .header-logo {
+      // padding: 10px 20px;
+      a {
+        text-decoration: none;
+        h2 {
+          color: #6300b3;
+        }
+      }
+    }
+    .header-nav {
+      nav {
+        ul {
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+
+          li {
+            margin: 0 20px;
+            list-style-type: none;
+            a {
+              text-decoration: none;
+              color: black;
+            }
+          }
+
+          li:first-child a {
+            color: #6300b3;
+          }
+        }
+      }
+    }
+    .header-buttons {
+      .contact-btn {
+        margin-right: 20px;
+        width: 110px;
+        height: 46px;
+        color: #6300b3;
+        border: 1px solid #6300b3;
+        background-color: transparent;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .auth-btn {
+        width: 110px;
+        height: 46px;
+        background-color: #6300b3;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+    }
+    .hamburger-close,
+    .hamburger-open {
+      display: none;
+      position: relative;
+      width: 1em;
+      height: 1em;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      font-size: 2rem;
+      color: black;
+
+      .hamburger-line {
+        position: absolute;
+        right: 0;
+        width: 100%;
+        height: 0.125em;
+        border-radius: 0.125em;
+        background: currentColor;
+        transition: inherit;
+
+        &:nth-child(1) {
+          top: 0.125em;
+        }
+
+        &:nth-child(2) {
+          top: 0.438em;
+        }
+
+        &:nth-child(3) {
+          top: 0.75em;
+          width: 0.625em;
+        }
+      }
+    }
+
+    .hamburger-menu {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  header {
+    padding: 20px 0;
+    .header-cont {
+      overflow-x: clip;
+      padding: 0 30px;
+      position: relative;
+      .header-buttons,
+      .header-nav {
+        display: none;
+      }
+      .hamburger-menu {
+        padding: 0 30px;
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        position: fixed;
+        top: 0px;
+        right: 0;
+        transform: translatex(110%);
+        background-color: #e2ccf2;
+        height: 100vh;
+        border: none;
+        overflow: hidden;
+        transition: transform ease-in-out 0.5s;
+        border-left: 1px solid black;
+        &.open {
+          transform: translateX(0);
+        }
+        .hamburger-close {
+          display: flex;
+          align-self: flex-end;
+          margin-top: 29px;
+          margin-bottom: 50px;
+        }
+        .hamburger-nav {
+          nav {
+            ul {
+              padding: 0;
+              display: flex;
+              align-items: flex-start;
+              justify-content: center;
+              flex-direction: column;
+              width: 300px;
+              li:has(a) {
+                border-top: 1px solid black;
+              }
+              li {
+                width: 100%;
+                list-style-type: none;
+                margin-bottom: 10px;
+                text-align: end;
+                a {
+                  text-decoration: none;
+                  color: black;
+                  font-size: 29px;
+                }
+                .auth-btn {
+                  font-size: 29px;
+                  width: 100%;
+                  padding: 4px;
+                  background-color: #6300b3;
+                  color: white;
+                  border: none;
+                  border-radius: 7px;
+                  cursor: pointer;
+                }
+              }
+
+              li:first-child a {
+                color: #6300b3;
+              }
+            }
+          }
+        }
+      }
+      .hamburger-open {
+        display: block;
+      }
+    }
+  }
+}
