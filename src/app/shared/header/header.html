@@ -19,7 +19,9 @@
     <div class="header-buttons">
       <button class="contact-btn">Contact Us</button>
       <a routerLink="/login"><button class="auth-btn">Login</button></a>
-      <!-- <a routerLink="/"><button class="auth-btn">👤</button></a> -->
+      <a routerLink="/" (click)="logOut()" style="margin-left: 20px"
+        ><button class="auth-btn">Log Out</button></a
+      >
     </div>
     <div class="hamburger-open" (click)="handleHamburger()">
       <span class="hamburger-line"></span>
