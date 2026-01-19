@@ -1,24 +1,25 @@
 <header>
   <div class="header-cont">
     <div class="header-logo">
-      <a href="#">
+      <a routerLink="/">
         <h2>Job Portal</h2>
       </a>
     </div>
     <div class="header-nav">
       <nav>
         <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Find Jobs</a></li>
-          <li><a href="#">Employers</a></li>
-          <li><a href="#">Admin</a></li>
-          <li><a href="#">About Us</a></li>
+          <li><a routerLink="/">Home</a></li>
+          <li><a routerLink="#">Find Jobs</a></li>
+          <li><a routerLink="#">Employers</a></li>
+          <li><a routerLink="#">Admin</a></li>
+          <li><a routerLink="#">About Us</a></li>
         </ul>
       </nav>
     </div>
     <div class="header-buttons">
       <button class="contact-btn">Contact Us</button>
-      <a href="login"><button class="auth-btn">Login</button></a>
+      <a routerLink="/login"><button class="auth-btn">Login</button></a>
+      <!-- <a routerLink="/"><button class="auth-btn">👤</button></a> -->
     </div>
     <div class="hamburger-open" (click)="handleHamburger()">
       <span class="hamburger-line"></span>
@@ -35,14 +36,15 @@
       <div class="hamburger-nav">
         <nav>
           <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Find Jobs</a></li>
-            <li><a href="#">Employers</a></li>
-            <li><a href="#">Admin</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact Us</a></li>
+            <li><a routerLink="#">Home</a></li>
+            <li><a routerLink="#">Find Jobs</a></li>
+            <li><a routerLink="#">Employers</a></li>
+            <li><a routerLink="#">Admin</a></li>
+            <li><a routerLink="#">About Us</a></li>
+            <li><a routerLink="#">Contact Us</a></li>
             <li>
-              <a href="login"><button class="auth-btn">Login</button></a>
+              <a routerLink="/login"><button class="auth-btn">Login</button></a>
+              <!-- <a routerLink="/"><button class="auth-btn">👤</button></a> -->
             </li>
           </ul>
         </nav>

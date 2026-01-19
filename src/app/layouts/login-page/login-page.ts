@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { email, form, FormField, required, submit } from '@angular/forms/signals';
 import { LoginProps } from '../../models/login';
+import { Auth as AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -9,6 +11,9 @@ import { LoginProps } from '../../models/login';
   styleUrl: './login-page.scss',
 })
 export class LoginPage {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
   loginModel = signal<LoginProps>({
     email: '',
     password: '',
@@ -24,8 +29,14 @@ export class LoginPage {
   onSubmit(event: Event) {
     event.preventDefault();
     submit(this.loginForm, async () => {
-      const credentials = this.loginModel;
-      console.log('Logging with: ', this.loginModel);
+      const credentials = this.loginModel();
+      console.log('Logging with: ', credentials);
+      try {
+        await this.auth.signIn(credentials.email, credentials.password);
+        await this.router.navigate(['/']);
+      } catch (error) {
+        console.error('Error during sign in:', error);
+      }
     });
   }
 }

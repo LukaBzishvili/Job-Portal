@@ -1,1 +1,85 @@
-<p>register-page works!</p>
+<section class="register-form-container">
+  <div class="container">
+    <h2>Register form</h2>
+    <p>Register to apply for jobs of your choice all over the world</p>
+    <form class="form-container" (submit)="onSubmit($event)">
+      <div class="name-input-cont">
+        @if (registerForm.fullName().touched() && registerForm.fullName().invalid()) {
+          <ul class="error">
+            @for (error of registerForm.fullName().errors(); track error) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+        <label
+          >Full name <span>*</span>
+          <input
+            type="text"
+            [formField]="registerForm.fullName"
+            placeholder="Enter your full name"
+          />
+        </label>
+      </div>
+      <div class="email-input-cont">
+        @if (registerForm.email().touched() && registerForm.email().invalid()) {
+          <ul class="error">
+            @for (error of registerForm.email().errors(); track error) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+        <label
+          >Email <span>*</span>
+          <input type="email" [formField]="registerForm.email" placeholder="Enter your email" />
+        </label>
+      </div>
+      <div class="password-input-cont">
+        @if (registerForm.password().touched() && registerForm.password().invalid()) {
+          <ul class="error">
+            @for (error of registerForm.password().errors(); track error) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+        <label
+          >Password<span>*</span>
+          <input
+            type="text"
+            [formField]="registerForm.password"
+            placeholder="Enter your password"
+          />
+        </label>
+      </div>
+      <div class="phone-input-cont">
+        <label>
+          Phone number<span>*</span>
+          <input
+            type="number"
+            [formField]="registerForm.phoneNumber"
+            placeholder="Enter your phone number"
+          />
+        </label>
+      </div>
+      <button type="submit" class="register-btn">Register</button>
+      <div class="other-login">
+        <div class="other-login-text">
+          <h3>Or sign up with</h3>
+        </div>
+        <div class="other-login-ways">
+          <a href="#">
+            <img src="/images/google-login.png" alt="other-login" />
+          </a>
+          <a href="#">
+            <img src="/images/facebook-login.png" alt="other-login" />
+          </a>
+          <a href="#">
+            <img src="/images/linkedin-login.png" alt="other-login" />
+          </a>
+        </div>
+        <div class="no-account">
+          <p>Already have an account? <a href="login">Sign in</a></p>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
