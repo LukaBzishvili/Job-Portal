@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { auth } from '../../firebase/firebase';
@@ -11,6 +11,8 @@ import { auth } from '../../firebase/firebase';
   styleUrl: './header.scss',
 })
 export class Header {
+  @Input() isLoggedIn = false;
+  @Input() isLoading = true;
   isHamburgerOpen = false;
 
   logOut() {

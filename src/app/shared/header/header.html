@@ -5,6 +5,7 @@
         <h2>Job Portal</h2>
       </a>
     </div>
+
     <div class="header-nav">
       <nav>
         <ul>
@@ -16,18 +17,23 @@
         </ul>
       </nav>
     </div>
+
     <div class="header-buttons">
       <button class="contact-btn">Contact Us</button>
-      <a routerLink="/login"><button class="auth-btn">Login</button></a>
-      <a routerLink="/" (click)="logOut()" style="margin-left: 20px"
-        ><button class="auth-btn">Log Out</button></a
-      >
+      <a *ngIf="!isLoggedIn" routerLink="/login">
+        <button class="auth-btn">Login</button>
+      </a>
+      <a *ngIf="isLoggedIn" routerLink="/" (click)="logOut()">
+        <button class="auth-btn">Log Out</button>
+      </a>
     </div>
+
     <div class="hamburger-open" (click)="handleHamburger()">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </div>
+
     <div class="hamburger-menu" [class.open]="isHamburgerOpen">
       <div class="hamburger-close" (click)="handleHamburger()">
         <span class="hamburger-line"></span>
@@ -45,8 +51,12 @@
             <li><a routerLink="#">About Us</a></li>
             <li><a routerLink="#">Contact Us</a></li>
             <li>
-              <a routerLink="/login"><button class="auth-btn">Login</button></a>
-              <!-- <a routerLink="/"><button class="auth-btn">👤</button></a> -->
+              <a *ngIf="!isLoggedIn" routerLink="/login">
+                <button class="auth-btn">Login</button>
+              </a>
+              <a *ngIf="isLoggedIn" routerLink="/" (click)="logOut()">
+                <button class="auth-btn">Log Out</button>
+              </a>
             </li>
           </ul>
         </nav>
