@@ -3,6 +3,7 @@ import { Main } from './layouts/main/main';
 import { LoginPage } from './layouts/login-page/login-page';
 import { RegisterPage } from './layouts/register-page/register-page';
 import { authGuard } from './guards/auth-guard';
+import { JobsPage } from './layouts/jobs-page/jobs-page';
 
 export const routes: Routes = [
   { path: '', component: Main },
@@ -11,5 +12,9 @@ export const routes: Routes = [
     path: 'register',
     canActivate: [authGuard],
     component: RegisterPage,
+  },
+  {
+    path: 'jobs',
+    component: JobsPage,
   },
 ];

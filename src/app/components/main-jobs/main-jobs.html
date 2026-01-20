@@ -5,10 +5,18 @@
   </div>
   <div class="jobs-list">
     <div class="job-cards">
-      <app-main-job-card></app-main-job-card>
-      <app-main-job-card></app-main-job-card>
-      <app-main-job-card></app-main-job-card>
+      <ng-container *ngFor="let job of jobs">
+        <app-main-job-card
+          [title]="job.title"
+          [jobType]="job.jobType"
+          [salary]="job.salary"
+          [companyLocation]="job.companyLocation"
+          [applicants]="job.applicants"
+          [link]="job.link"
+          [company]="job.company"
+        ></app-main-job-card>
+      </ng-container>
     </div>
-    <button class="view-all-btn">View All</button>
+    <button routerLink="jobs" class="view-all-btn">View All</button>
   </div>
 </section>

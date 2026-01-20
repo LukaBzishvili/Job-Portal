@@ -5,6 +5,7 @@ import { Footer } from './shared/footer/footer';
 import { LoadingScreen } from './components/loading-screen/loading-screen';
 import { auth } from './firebase/firebase';
 import { onAuthStateChanged, Unsubscribe } from 'firebase/auth';
+import { LoadingService } from './services/loading-service';
 
 @Component({
   selector: 'app-root',
@@ -13,15 +14,15 @@ import { onAuthStateChanged, Unsubscribe } from 'firebase/auth';
   styleUrl: './app.scss',
 })
 export class App implements OnDestroy {
-  isLoading = signal(true);
   isLoggedIn = signal(false);
 
   private unsubAuth?: Unsubscribe;
 
-  constructor() {
+  constructor(public loading: LoadingService) {
+    this.loading.start();
     this.unsubAuth = onAuthStateChanged(auth, (user) => {
       this.isLoggedIn.set(!!user);
-      this.isLoading.set(false);
+      this.loading.end();
     });
   }
 

@@ -1,7 +1,7 @@
-@if (isLoading()) {
-  <app-loading-screen [fullscreen]="true" text="Loading header..." [dimBackground]="true" />
+@if (loading.isLoading()) {
+  <app-loading-screen [fullscreen]="true" text="Loading..." [dimBackground]="true" />
 } @else {
-  <app-header [isLoading]="isLoading()" [isLoggedIn]="isLoggedIn()"></app-header>
+  <app-header [isLoggedIn]="isLoggedIn()"></app-header>
   <router-outlet></router-outlet>
   <app-footer></app-footer>
 }

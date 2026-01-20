@@ -1,0 +1,154 @@
+.jobs-page-container {
+  //   .jobs-search-cont {
+  //   }
+  .jobs-catalog {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    width: 100%;
+    .jobs-filter {
+      height: 100%;
+      width: 25%;
+      max-width: 300px;
+      .top-content {
+        .filter-title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin: 20px 0;
+          h3 {
+            font-size: 25px;
+          }
+          button {
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            color: gray;
+          }
+        }
+        .filter-details {
+          padding: 20px;
+          border-radius: 9px;
+          background-color: #f2f2f2;
+          display: flex;
+          align-items: flex-start;
+          justify-content: flex-start;
+          flex-direction: column;
+          min-height: 80vh;
+          .filter-item {
+            margin-bottom: 10px;
+            width: 100%;
+            .filter-header {
+              background-color: transparent;
+              border: 1.5px solid rgb(198, 197, 197);
+              border-radius: 9px;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 10px 5px;
+              // .filter-header-title {
+              // }
+              .arrow {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transform: rotate(90deg);
+                transition: transform 0.3s ease;
+              }
+              .open {
+                transform: rotate(-90deg);
+              }
+            }
+            .options {
+              margin-top: 10px;
+              display: flex;
+              align-items: flex-start;
+              justify-content: center;
+              width: 100%;
+              flex-direction: column;
+              max-height: 0;
+              overflow: hidden;
+              transition: max-height 0.5s ease;
+              &.open {
+                max-height: 300px;
+              }
+            }
+          }
+        }
+      }
+    }
+    .jobs-list-cont {
+      h3 {
+        margin: 20px;
+        font-size: 25px;
+      }
+      .jobs-list {
+        max-height: 100vh;
+        overflow-y: scroll;
+        display: grid;
+        grid-template-columns: auto auto;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 1100px) {
+  .jobs-page-container {
+    .jobs-catalog {
+      flex-direction: column;
+      .jobs-filter {
+        max-width: none;
+        margin-bottom: 20px;
+        width: 100%;
+        .top-content {
+          width: 100%;
+          padding: 0 30px;
+          box-sizing: border-box;
+          // .filter-title {
+          // }
+          .filter-details {
+            min-height: auto;
+            // flex-direction: row;
+            width: 100%;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: space-between;
+            .filter-item {
+              position: relative;
+              margin-bottom: 0;
+              .filter-header {
+                border-radius: 0;
+              }
+              .options {
+                // position: absolute;
+                top: 20px;
+                background-color: #ffffff;
+                box-sizing: border-box;
+                // border-bottom-left-radius: 7px;
+                // border-bottom-right-radius: 7px;
+                margin-top: 0;
+                border-left: 1.5px solid rgb(198, 197, 197);
+                border-right: 1.5px solid rgb(198, 197, 197);
+
+                .option {
+                  width: 100%;
+                  padding: 5px 2px;
+
+                  border-bottom: 1.5px solid rgb(198, 197, 197);
+                }
+              }
+            }
+          }
+        }
+      }
+      .jobs-list-cont {
+        width: 100%;
+        .jobs-list {
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}

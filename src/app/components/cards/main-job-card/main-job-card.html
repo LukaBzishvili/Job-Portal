@@ -1,15 +1,15 @@
 <div class="job-card-container">
   <div class="job-card-top">
-    <h4>Technical Support Specialist</h4>
+    <h4>{{ title }}</h4>
     <p>
-      <span>PART-TIME</span>
-      Salary: 20,000 - 25,000 EUR
+      <span>{{ jobType }}</span>
+      Salary: {{ salary }} EUR
     </p>
     <div class="employer-details">
       <img src="/images/google-logo.png" alt="employer-logo" />
       <div class="employer">
-        <h5>Google Inc.</h5>
-        <p>Washington, USA</p>
+        <h5>{{ company }}</h5>
+        <p>{{ companyLocation }}</p>
       </div>
     </div>
     <div class="applicants">
@@ -18,7 +18,7 @@
         <img src="/images/Ellipse7.png" alt="profile" />
         <img src="/images/Ellipse8.png" alt="profile" />
       </div>
-      <p class="applicant-count">+19 applicants</p>
+      <p class="applicant-count">{{ applicants?.length }} applicants</p>
     </div>
     <div class="card-btns">
       <button class="details">View Details</button>

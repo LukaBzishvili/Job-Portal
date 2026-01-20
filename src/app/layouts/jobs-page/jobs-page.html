@@ -1,0 +1,60 @@
+@if (isLoading()) {
+  <app-loading-screen [fullscreen]="true" text="Loading header..." [dimBackground]="true" />
+} @else {
+  <section class="jobs-page-container">
+    <div class="jobs-search-cont"></div>
+    <div class="jobs-catalog">
+      <div class="jobs-filter">
+        <div class="top-content">
+          <div class="filter-title">
+            <h3>Filter</h3>
+            <button>Clear all</button>
+          </div>
+          <div class="filter-details">
+            <ng-container *ngFor="let filter of filters">
+              <div class="filter-item">
+                <button class="filter-header" type="button" (click)="filter.open = !filter.open">
+                  <span class="filter-header-title">{{ filter.id }}</span>
+                  <span class="arrow" [class.open]="filter.open">></span>
+                </button>
+                <!-- *ngIf="filter.open" -->
+                <div class="options" [class.open]="filter.open">
+                  <ng-container *ngFor="let key of getFilterOptions(filter)">
+                    <label *ngIf="filter.id !== 'Salary Range'" class="option">
+                      <input
+                        type="checkbox"
+                        [checked]="isChecked(filter, key)"
+                        (change)="toggleOption(filter, key, $any($event.target).checked)"
+                      />
+                      {{ key }}
+                    </label>
+                    <label *ngIf="filter.id === 'Salary Range'" class="option">
+                      <input type="number" min="0" max="200000" step="1000" />
+                      {{ key }}
+                    </label>
+                  </ng-container>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="jobs-list-cont">
+        <h3>All jobs ({{ jobs.length }})</h3>
+        <div class="jobs-list">
+          <ng-container *ngFor="let job of jobs">
+            <app-main-job-card
+              [title]="job.title"
+              [jobType]="job.jobType"
+              [salary]="job.salary"
+              [companyLocation]="job.companyLocation"
+              [applicants]="job.applicants"
+              [link]="job.link"
+              [company]="job.company"
+            ></app-main-job-card>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </section>
+}
