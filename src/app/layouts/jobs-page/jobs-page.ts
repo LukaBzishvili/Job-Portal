@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { Firestore } from '../../services/firestore';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { Filter, Job } from '../../models/firestore';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-jobs-page',
   imports: [MainJobCard, CommonModule, LoadingScreen],
@@ -14,6 +15,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class JobsPage implements OnInit {
   filters: Filter[] = [];
   jobs: Job[] = [];
+
+  private allJobs: Job[] = [];
+  private sub?: Subscription;
+
   isLoading = signal(true);
 
   constructor(
@@ -50,8 +55,33 @@ export class JobsPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.filters = await this.fs.listFilters();
+    const [filters, jobs] = await Promise.all([this.fs.listFilters(), this.fs.listJobs()]);
+
+    this.allJobs = jobs;
+    this.filters = filters;
+    this.jobs = jobs;
+
     this.isLoading.set(false);
+
+    this.sub = this.route.queryParamMap.subscribe(async (map) => {
+      if (map.keys.length === 0) {
+        this.jobs = this.allJobs;
+        this.cdr.markForCheck();
+        return;
+      }
+
+      this.isLoading.set(true);
+      this.cdr.markForCheck();
+
+      this.jobs = await this.fs.listJobsByQueryParams(map);
+
+      this.isLoading.set(false);
+      this.cdr.markForCheck();
+    });
+  }
+
+  ngonDestroy() {
+    this.sub?.unsubscribe();
   }
 
   isChecked(filter: any, key: string): boolean {

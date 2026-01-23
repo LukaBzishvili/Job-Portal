@@ -15,15 +15,17 @@ import { LoadingService } from './services/loading-service';
 })
 export class App implements OnDestroy {
   isLoggedIn = signal(false);
-
   private unsubAuth?: Unsubscribe;
 
   constructor(public loading: LoadingService) {
-    this.loading.start();
-    this.unsubAuth = onAuthStateChanged(auth, (user) => {
-      this.isLoggedIn.set(!!user);
-      this.loading.end();
-    });
+    this.loading.track(
+      new Promise<void>((resolve) => {
+        this.unsubAuth = onAuthStateChanged(auth, (user) => {
+          this.isLoggedIn.set(!!user);
+          resolve();
+        });
+      }),
+    );
   }
 
   ngOnDestroy(): void {

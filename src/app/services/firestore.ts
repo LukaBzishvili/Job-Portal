@@ -11,9 +11,11 @@ import {
   query,
   orderBy,
   limit,
+  getDoc,
 } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
-import { Job } from '../models/firestore';
+import { auth, db } from '../firebase/firebase';
+import { Job, User } from '../models/firestore';
+import { ParamMap } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +47,82 @@ export class Firestore {
     });
   }
 
+  async listJobsByQueryParams(map: ParamMap): Promise<Job[]> {
+    const jobFunctions = map.getAll('JobFunctions').map((v) => v.toLowerCase());
+    const experience = map.getAll('ExperienceLevel').map((v) => v.toLowerCase());
+    const jobType = map.getAll('JobType').map((v) => v.toLowerCase());
+    const workMode = map.getAll('WorkMode').map((v) => v.toLowerCase());
+
+    // SalaryRange: support either ?SalaryRange=1000&SalaryRange=5000
+    // or ?SalaryRange=1000-5000
+    const salaryRangeRaw = map.getAll('SalaryRange');
+    const [minSalary, maxSalary] = this.parseSalaryRange(salaryRangeRaw);
+
+    const hasAnyFilter =
+      jobFunctions.length ||
+      experience.length ||
+      jobType.length ||
+      workMode.length ||
+      minSalary != null ||
+      maxSalary != null;
+
+    const allJobs = await this.listJobs();
+    if (!hasAnyFilter) return allJobs;
+
+    return allJobs.filter((job) => {
+      const jf = (job.jobFunction ?? '').toString().toLowerCase();
+      const exp = (job.experienceLevel ?? '').toString().toLowerCase();
+      const jt = (job.jobType ?? '').toString().toLowerCase();
+      const wm = (job.workMode ?? '').toString().toLowerCase();
+
+      const matchesJobFunction = !jobFunctions.length || jobFunctions.includes(jf);
+      const matchesExperience = !experience.length || experience.includes(exp);
+      const matchesJobType = !jobType.length || jobType.includes(jt);
+      const matchesWorkMode = !workMode.length || workMode.includes(wm);
+
+      const jobSalaryNum =
+        typeof job.salary === 'number'
+          ? job.salary
+          : Number(String(job.salary).replace(/[^\d.]/g, ''));
+
+      const hasSalaryFilter = minSalary != null || maxSalary != null;
+      const matchesSalary =
+        !hasSalaryFilter ||
+        (Number.isFinite(jobSalaryNum) &&
+          (minSalary == null || jobSalaryNum >= minSalary) &&
+          (maxSalary == null || jobSalaryNum <= maxSalary));
+
+      return (
+        matchesJobFunction &&
+        matchesExperience &&
+        matchesJobType &&
+        matchesWorkMode &&
+        matchesSalary
+      );
+    });
+  }
+
+  parseSalaryRange(values: string[]): [number | null, number | null] {
+    if (!values?.length) return [null, null];
+
+    if (values.length >= 2 && this.isFiniteNumber(values[0]) && this.isFiniteNumber(values[1])) {
+      return [Number(values[0]), Number(values[1])];
+    }
+
+    const joined = values.join(',');
+    const m = joined.match(/(\d+)\s*[-,]\s*(\d+)/);
+    if (m) return [Number(m[1]), Number(m[2])];
+
+    if (values.length === 1 && this.isFiniteNumber(values[0])) return [Number(values[0]), null];
+
+    return [null, null];
+  }
+
+  isFiniteNumber(v: any) {
+    const n = Number(v);
+    return Number.isFinite(n);
+  }
+
   private jobsListRef() {
     return collection(db, 'Jobs', 'Cards', 'list');
   }
@@ -74,5 +152,91 @@ export class Firestore {
       applicants: arrayUnion(userId),
       updatedAt: serverTimestamp(),
     });
+  }
+
+  // Users
+  private userDocRef(uid: string) {
+    return doc(db, 'users', uid);
+  }
+
+  async addUser(
+    uid: string,
+    data: {
+      fullName: string;
+      email: string;
+      phoneNumber?: number;
+    },
+  ) {
+    const userRef = doc(db, 'users', uid);
+
+    return setDoc(userRef, {
+      fullName: data.fullName,
+      email: data.email,
+      phoneNumber: data.phoneNumber ?? null,
+      photoURL: null,
+
+      role: 'user',
+      isEmailVerified: false,
+      isProfileComplete: false,
+
+      jobTitle: null,
+      experienceLevel: null,
+      yearsOfExperience: null,
+      skills: [],
+
+      location: {
+        country: null,
+        city: null,
+        timezone: null,
+      },
+
+      workPreferences: {
+        remote: false,
+        hybrid: false,
+        onsite: false,
+      },
+
+      resumeURL: null,
+      portfolioURL: null,
+      linkedinURL: null,
+      githubURL: null,
+
+      savedJobs: [],
+      appliedJobs: [],
+
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  async updateUser(uid: string, data: Partial<User>) {
+    const userRef = this.userDocRef(uid);
+
+    return updateDoc(userRef, {
+      ...data,
+      updatedAt: serverTimestamp(),
+    });
+  }
+
+  async getCurrentUserProfile(): Promise<User | null> {
+    const user = auth.currentUser;
+    if (!user) {
+      console.log('user does not exist');
+      return null;
+    }
+
+    const ref = doc(db, 'users', user.uid);
+    console.log(user.uid);
+    const snap = await getDoc(ref);
+
+    if (!snap.exists()) {
+      console.log('snap does not exist ');
+      return null;
+    }
+
+    return {
+      id: snap.id,
+      ...(snap.data() as Omit<User, 'id'>),
+    };
   }
 }

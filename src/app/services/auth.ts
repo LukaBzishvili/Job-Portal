@@ -16,6 +16,10 @@ export class Auth {
     return !!auth.currentUser;
   }
 
+  getCurrentUser(): User | null {
+    return auth.currentUser;
+  }
+
   onAuthStateChange(callback: (user: User | null) => void): () => void {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       callback(user);

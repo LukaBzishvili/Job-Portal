@@ -1,0 +1,64 @@
+<section class="profile-container">
+  <div class="profile-content">
+    <div class="top-content">
+      <div class="image-name">
+        <img src="/images/google-logo.png" alt="Google Logo" />
+        <h2>{{ user?.fullName }}</h2>
+      </div>
+      <div class="profession-details">
+        <!-- <h3>{{ user?.profession }}</h3> -->
+        <input type="number" placeholder="Phone Number" [value]="user?.phoneNumber" />
+      </div>
+    </div>
+    <div class="bottom-content">
+      <div class="prior-info">
+        <div class="more-detail">
+          <label
+            >Email:
+            <input type="email" placeholder="Email" [value]="user?.email" />
+          </label>
+        </div>
+        <div class="more-detail">
+          <label
+            >Experience:
+            <input
+              type="number"
+              placeholder="Years of experience..."
+              [value]="user?.yearsOfExperience"
+            />
+          </label>
+        </div>
+      </div>
+      <div class="sec-info">
+        <div class="more-detail">
+          <label class="profile-links"
+            >Profile Links:
+            <input type="text" placeholder="GitHub" [value]="user?.githubURL" />
+            <input type="text" placeholder="LinkedIn" [value]="user?.linkedinURL" />
+          </label>
+        </div>
+        <div class="more-detail">
+          <label class="profile-skills"
+            >Skills:
+            <ng-container *ngFor="let skill of user?.skills">
+              <input type="text" placeholder="Skill" [value]="skill" />
+            </ng-container>
+            <div *ngIf="user?.skills?.length === 0">
+              <div class="input-cont">
+                <input type="text" placeholder="Skill" [formControl]="newSkill" />
+                <button (click)="saveSkill()" class="add-btn">Add</button>
+              </div>
+            </div>
+            <div *ngIf="addingSkill() && user?.skills?.length !== 0">
+              <div class="input-cont">
+                <input type="text" placeholder="Skill" [formControl]="newSkill" />
+                <button (click)="saveSkill()" class="add-btn">Add</button>
+              </div>
+            </div>
+            <button class="add-more-btn" (click)="addMoreSkill()">Add more</button>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

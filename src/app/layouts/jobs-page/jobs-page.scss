@@ -36,17 +36,18 @@
           flex-direction: column;
           min-height: 80vh;
           .filter-item {
-            margin-bottom: 10px;
+            // margin-bottom: 10px;
             width: 100%;
             .filter-header {
               background-color: transparent;
               border: 1.5px solid rgb(198, 197, 197);
-              border-radius: 9px;
+              // border-radius: 9px;
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: space-between;
               padding: 10px 5px;
+              cursor: pointer;
               // .filter-header-title {
               // }
               .arrow {
@@ -61,7 +62,8 @@
               }
             }
             .options {
-              margin-top: 10px;
+              // margin-top: 10px;
+              padding: 0 5px;
               display: flex;
               align-items: flex-start;
               justify-content: center;
@@ -70,8 +72,14 @@
               max-height: 0;
               overflow: hidden;
               transition: max-height 0.5s ease;
+              border-left: 1.5px solid rgb(198, 197, 197);
+              border-right: 1.5px solid rgb(198, 197, 197);
+              box-sizing: border-box;
               &.open {
                 max-height: 300px;
+              }
+              .option {
+                padding: 3px 0;
               }
             }
           }
@@ -144,9 +152,86 @@
       }
       .jobs-list-cont {
         width: 100%;
+        h3 {
+          text-align: center;
+          margin-bottom: 40px;
+        }
         .jobs-list {
           align-items: center;
           justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .jobs-page-container {
+    .jobs-catalog {
+      flex-direction: column;
+      .jobs-filter {
+        max-width: none;
+        margin-bottom: 20px;
+        width: 100%;
+        .top-content {
+          width: 100%;
+          padding: 0 30px;
+          box-sizing: border-box;
+          // .filter-title {
+          // }
+          .filter-details {
+            min-height: auto;
+            // flex-direction: row;
+            width: 100%;
+            box-sizing: border-box;
+            align-items: center;
+            justify-content: space-between;
+            .filter-item {
+              position: relative;
+              margin-bottom: 0;
+              .filter-header {
+                border-radius: 0;
+                .filter-header-title {
+                  font-size: 25px;
+                }
+              }
+              .options {
+                // position: absolute;
+                top: 20px;
+                background-color: #ffffff;
+                box-sizing: border-box;
+                // border-bottom-left-radius: 7px;
+                // border-bottom-right-radius: 7px;
+                margin-top: 0;
+                border-left: 1.5px solid rgb(198, 197, 197);
+                border-right: 1.5px solid rgb(198, 197, 197);
+
+                .option {
+                  width: 100%;
+                  padding: 5px 2px;
+                  font-size: 25px;
+                  border-bottom: 1.5px solid rgb(198, 197, 197);
+                  input[type='checkbox'] {
+                    width: 20px;
+                    height: 20px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      .jobs-list-cont {
+        width: 100%;
+        h3 {
+          text-align: center;
+          margin-bottom: 40px;
+          font-size: 30px;
+        }
+        .jobs-list {
+          align-items: center;
+          justify-content: center;
+          grid-template-columns: auto;
         }
       }
     }
