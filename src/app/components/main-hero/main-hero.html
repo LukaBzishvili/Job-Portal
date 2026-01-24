@@ -7,13 +7,23 @@
     <div class="hero-search">
       <div class="input-cont">
         <img src="/images/fi_search.png" alt="search" />
-        <input type="text" class="hero-input" placeholder="Job Title, Keyword..." />
+        <input
+          [(ngModel)]="searchJobs"
+          type="text"
+          class="hero-input"
+          placeholder="Job Title, Keyword..."
+        />
       </div>
       <div class="location-input-cont">
         <img src="/images/fi_map-pin.png" alt="location" />
-        <input type="text" class="hero-location-input" placeholder="Location" />
+        <input
+          [(ngModel)]="searchLocation"
+          type="text"
+          class="hero-location-input"
+          placeholder="Location"
+        />
       </div>
-      <button class="search-btn">Find Job</button>
+      <button (click)="searchForResults()" class="search-btn">Find Job</button>
     </div>
   </div>
   <div class="hero-right">

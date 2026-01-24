@@ -82,7 +82,7 @@ export class Profile implements OnInit {
   newSkill = new FormControl('');
   isSaveDisabled = true;
   uploadProgress: number | null = null;
-  imagePreview: string | null = null;
+  // imagePreview: string | null = null;
 
   constructor(
     private fs: Firestore,
@@ -98,15 +98,16 @@ export class Profile implements OnInit {
     // console.log('Current user profile: ', this.user);
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      this.imagePreview = URL.createObjectURL(file);
+  // onFileSelected(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     const file = input.files[0];
+  //     this.imagePreview = URL.createObjectURL(file);
+  //     console.log(URL.createObjectURL(file));
 
-      this.isSaveDisabled = false;
-    }
-  }
+  //     this.isSaveDisabled = false;
+  //   }
+  // }
 
   private serializeUser(user: User | null): string {
     if (!user) return '';
@@ -124,6 +125,7 @@ export class Profile implements OnInit {
         city: (user as any).location?.city ?? '',
         country: (user as any).location?.country ?? '',
       },
+      // photoURL: (user as any).photoURL ?? '',
     };
 
     return JSON.stringify(editable);
@@ -142,8 +144,10 @@ export class Profile implements OnInit {
       githubURL: this.user.githubURL,
       linkedinURL: this.user.linkedinURL,
       location: this.user.location ?? { city: '', country: '' },
-      photoURL: this.user.photoURL,
+      // photoURL: this.user.photoURL,
     };
+
+    console.log('Submitting user profile changes:', payload);
 
     this.isSaving = true;
 

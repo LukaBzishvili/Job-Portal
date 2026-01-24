@@ -4,17 +4,22 @@ import { CommonModule } from '@angular/common';
 import { Firestore } from '../../services/firestore';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { Filter, Job } from '../../models/firestore';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-jobs-page',
-  imports: [MainJobCard, CommonModule, LoadingScreen],
+  imports: [MainJobCard, CommonModule, LoadingScreen, FormsModule],
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',
 })
 export class JobsPage implements OnInit {
   filters: Filter[] = [];
   jobs: Job[] = [];
+
+  searchJobs: string = '';
+  searchLocation: string = '';
 
   private allJobs: Job[] = [];
   private sub?: Subscription;
@@ -26,10 +31,16 @@ export class JobsPage implements OnInit {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute,
-  ) {
-    fs.listJobs().then((jobs) => {
-      this.jobs = jobs;
-      this.cdr.markForCheck();
+  ) {}
+
+  searchJobsAndLocation() {
+    const q = this.searchJobs.trim() || null;
+    const location = this.searchLocation.trim() || null;
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { q, location },
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -45,6 +56,7 @@ export class JobsPage implements OnInit {
 
     if (checked && value === '') {
       this.router.navigate([], {
+        relativeTo: this.route,
         queryParams: { [safeKey]: null },
         queryParamsHandling: 'merge',
       });
@@ -58,10 +70,18 @@ export class JobsPage implements OnInit {
       : cleanedCurrent.filter((v) => v !== value);
 
     this.router.navigate([], {
+      relativeTo: this.route,
       queryParams: {
         [safeKey]: next.length ? next : null,
       },
       queryParamsHandling: 'merge',
+    });
+  }
+
+  clearFilters() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
     });
   }
 
@@ -72,15 +92,31 @@ export class JobsPage implements OnInit {
     this.filters = filters;
     this.jobs = jobs;
 
+    const snap = this.route.snapshot.queryParamMap;
+    this.searchJobs = snap.get('q') ?? '';
+    this.searchLocation = snap.get('location') ?? '';
+
     this.isLoading.set(false);
+    this.cdr.markForCheck();
 
     this.sub = this.route.queryParamMap.subscribe(async (map) => {
-      const hasRealFilters = map.keys.some((k) => {
+      const urlQ = map.get('q') ?? '';
+      const urlLocation = map.get('location') ?? '';
+
+      if (this.searchJobs !== urlQ) this.searchJobs = urlQ;
+      if (this.searchLocation !== urlLocation) this.searchLocation = urlLocation;
+
+      const hasFilterParams = map.keys.some((k) => {
+        if (k === 'q' || k === 'location') return false;
+
         const values = map.getAll(k);
         return values.length > 0 && !values.includes('');
       });
 
-      if (!hasRealFilters) {
+      const hasSearch = !!urlQ.trim() || !!urlLocation.trim();
+      const shouldFilter = hasFilterParams || hasSearch;
+
+      if (!shouldFilter) {
         this.jobs = this.allJobs;
         this.cdr.markForCheck();
         return;

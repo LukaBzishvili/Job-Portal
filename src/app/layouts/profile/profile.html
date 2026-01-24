@@ -95,7 +95,7 @@
   <div class="profile-content">
     <div class="top-content">
       <div class="image-name">
-        <div class="profile-image-cont">
+        <!-- <div class="profile-image-cont">
           <div class="avatar-wrapper" (click)="fileUpload.click()">
             <img [src]="imagePreview || '/images/google-logo.png'" alt="Profile image" />
             <div class="overlay">Change</div>
@@ -108,7 +108,7 @@
             (change)="onFileSelected($event)"
             hidden
           />
-        </div>
+        </div> -->
 
         <input type="text" [value]="user?.fullName ?? ''" (input)="onFullNameInput($event)" />
       </div>

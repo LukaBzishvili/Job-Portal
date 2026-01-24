@@ -45,12 +45,13 @@
       <div class="hamburger-nav">
         <nav>
           <ul>
-            <li><a routerLink="#">Home</a></li>
-            <li><a routerLink="#">Find Jobs</a></li>
+            <li><a routerLink="/">Home</a></li>
+            <li><a routerLink="/jobs">Find Jobs</a></li>
             <li><a routerLink="#">Employers</a></li>
             <li><a routerLink="#">Admin</a></li>
             <li><a routerLink="#">About Us</a></li>
             <li><a routerLink="#">Contact Us</a></li>
+            <li><a routerLink="/profile">Profile</a></li>
             <li>
               <a *ngIf="!isLoggedIn" routerLink="/login">
                 <button class="auth-btn">Login</button>

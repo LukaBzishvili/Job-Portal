@@ -53,8 +53,9 @@ export class Firestore {
     const jobType = map.getAll('JobType').map((v) => v.toLowerCase());
     const workMode = map.getAll('WorkMode').map((v) => v.toLowerCase());
 
-    // SalaryRange: support either ?SalaryRange=1000&SalaryRange=5000
-    // or ?SalaryRange=1000-5000
+    const q = (map.get('q') ?? '').trim().toLowerCase();
+    const locationQ = (map.get('location') ?? '').trim().toLowerCase();
+
     const salaryRangeRaw = map.getAll('SalaryRange');
     const [minSalary, maxSalary] = this.parseSalaryRange(salaryRangeRaw);
 
@@ -64,7 +65,9 @@ export class Firestore {
       jobType.length ||
       workMode.length ||
       minSalary != null ||
-      maxSalary != null;
+      maxSalary != null ||
+      !!q ||
+      !!locationQ;
 
     const allJobs = await this.listJobs();
     if (!hasAnyFilter) return allJobs;
@@ -92,12 +95,21 @@ export class Firestore {
           (minSalary == null || jobSalaryNum >= minSalary) &&
           (maxSalary == null || jobSalaryNum <= maxSalary));
 
+      const title = (job.title ?? '').toString().toLowerCase();
+      const company = (job.company ?? '').toString().toLowerCase();
+      const matchesSearch = !q || title.includes(q) || company.includes(q);
+
+      const loc = (job.companyLocation ?? (job as any).location ?? '').toString().toLowerCase();
+      const matchesLocation = !locationQ || loc.includes(locationQ);
+
       return (
         matchesJobFunction &&
         matchesExperience &&
         matchesJobType &&
         matchesWorkMode &&
-        matchesSalary
+        matchesSalary &&
+        matchesSearch &&
+        matchesLocation
       );
     });
   }

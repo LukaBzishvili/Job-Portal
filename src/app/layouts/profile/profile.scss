@@ -1,4 +1,5 @@
 .profile-container {
+  margin: 20px;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -186,6 +187,61 @@
               cursor: pointer;
             }
           }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .profile-container {
+    .profile-content {
+      // .save-all-cont {
+      //   .submit-changes-btn {
+      //     &:disabled {
+      //     }
+      //   }
+      // }
+      .top-content {
+        .image-name {
+          // .profile-image-cont {
+          //   .avatar-wrapper {
+          //     img {
+          //     }
+          //     .overlay {
+          //     }
+          //     &:hover .overlay {
+          //     }
+          //   }
+          // }
+          input {
+            width: 90px;
+          }
+        }
+        .profession-details {
+          input {
+            width: 90px;
+          }
+        }
+      }
+      .bottom-content {
+        .prior-info,
+        .sec-info {
+          justify-content: center;
+          // .more-detail {
+          //   label {
+          //     input {
+          //     }
+          //     .input-cont {
+          //       input {
+          //       }
+          //       .add-btn {
+          //       }
+          //     }
+          //     .add-more-btn {
+          //     }
+          //   }
+          // }
         }
       }
     }

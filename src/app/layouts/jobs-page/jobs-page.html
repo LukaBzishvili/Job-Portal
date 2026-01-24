@@ -2,13 +2,35 @@
   <app-loading-screen [fullscreen]="true" text="Loading header..." [dimBackground]="true" />
 } @else {
   <section class="jobs-page-container">
-    <div class="jobs-search-cont"></div>
+    <div class="jobs-search-cont">
+      <div class="jobs-search">
+        <div class="input-cont">
+          <img src="/images/fi_search.png" alt="search" />
+          <input
+            [(ngModel)]="searchJobs"
+            type="text"
+            class="hero-input"
+            placeholder="Job Title, Keyword..."
+          />
+        </div>
+        <div class="location-input-cont">
+          <img src="/images/fi_map-pin.png" alt="location" />
+          <input
+            [(ngModel)]="searchLocation"
+            type="text"
+            class="hero-location-input"
+            placeholder="Location"
+          />
+        </div>
+        <button (click)="searchJobsAndLocation()" class="search-btn">Find Job</button>
+      </div>
+    </div>
     <div class="jobs-catalog">
       <div class="jobs-filter">
         <div class="top-content">
           <div class="filter-title">
             <h3>Filter</h3>
-            <button>Clear all</button>
+            <button (click)="clearFilters()">Clear all</button>
           </div>
           <div class="filter-details">
             <ng-container *ngFor="let filter of filters">
