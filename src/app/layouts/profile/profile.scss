@@ -12,6 +12,29 @@
     margin: 0 auto;
     padding: 20px 30px;
     box-sizing: border-box;
+
+    .save-all-cont {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      .submit-changes-btn {
+        margin-top: 10px;
+        padding: 7px 5px;
+        background-color: #6300b3;
+        // border: 1px solid #6300b3;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        align-self: flex-end;
+        margin: 5px;
+
+        &:disabled {
+          background-color: #8433c66c;
+          cursor: not-allowed;
+        }
+      }
+    }
     .top-content {
       padding: 20px 0;
       display: flex;
@@ -23,11 +46,49 @@
         align-items: center;
         justify-content: center;
         flex-direction: row;
-        img {
-          margin-right: 20px;
+        .profile-image-cont {
+          position: relative;
+          .avatar-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+
+            img {
+              width: 80px;
+              height: 80px;
+              object-fit: cover;
+              margin-right: 20px;
+            }
+
+            .overlay {
+              position: absolute;
+              inset: 0;
+              background: rgba(0, 0, 0, 0.45);
+              color: white;
+              font-size: 12px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              opacity: 0;
+              transition: opacity 0.2s ease;
+            }
+
+            &:hover .overlay {
+              opacity: 1;
+            }
+          }
         }
-        // h2 {
-        // }
+        input {
+          margin-left: 10px;
+          border: none;
+          font-size: 24px;
+          &:focus {
+            outline: none;
+          }
+        }
       }
       .profession-details {
         input {
@@ -62,7 +123,7 @@
         flex-direction: row;
         flex-wrap: wrap;
         width: 100%;
-        padding: 10px;
+        // padding: 10px;
         padding-bottom: 40px;
         .more-detail {
           width: fit-content;
@@ -106,8 +167,11 @@
                 margin: 0;
                 padding: 5px;
                 background-color: #6300b3;
+                // color: #6300b3;
                 color: white;
+                // background-color: white;
                 border: none;
+                // border: 1px solid #6300b3;
                 border-radius: 7px;
                 cursor: pointer;
               }

@@ -1,12 +1,24 @@
-<section class="profile-container">
+<!-- <section class="profile-container">
   <div class="profile-content">
     <div class="top-content">
       <div class="image-name">
-        <img src="/images/google-logo.png" alt="Google Logo" />
-        <h2>{{ user?.fullName }}</h2>
+        <div class="profile-image-cont">
+          <div class="avatar-wrapper" (click)="fileUpload.click()">
+            <img [src]="imagePreview || '/images/google-logo.png'" alt="Profile image" />
+            <div class="overlay">Change</div>
+          </div>
+
+          <input
+            type="file"
+            #fileUpload
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            hidden
+          />
+        </div>
+        <input type="text" [value]="user?.fullName" />
       </div>
       <div class="profession-details">
-        <!-- <h3>{{ user?.profession }}</h3> -->
         <input type="number" placeholder="Phone Number" [value]="user?.phoneNumber" />
       </div>
     </div>
@@ -16,6 +28,12 @@
           <label
             >Email:
             <input type="email" placeholder="Email" [value]="user?.email" />
+          </label>
+        </div>
+        <div class="more-detail">
+          <label
+            >Role:
+            <input type="text" placeholder="Profession..." [value]="user?.jobTitle" />
           </label>
         </div>
         <div class="more-detail">
@@ -30,13 +48,6 @@
         </div>
       </div>
       <div class="sec-info">
-        <div class="more-detail">
-          <label class="profile-links"
-            >Profile Links:
-            <input type="text" placeholder="GitHub" [value]="user?.githubURL" />
-            <input type="text" placeholder="LinkedIn" [value]="user?.linkedinURL" />
-          </label>
-        </div>
         <div class="more-detail">
           <label class="profile-skills"
             >Skills:
@@ -58,7 +69,172 @@
             <button class="add-more-btn" (click)="addMoreSkill()">Add more</button>
           </label>
         </div>
+        <div class="more-detail">
+          <label class="profile-links"
+            >Profile Links:
+            <input type="text" placeholder="GitHub" [value]="user?.githubURL" />
+            <input type="text" placeholder="LinkedIn" [value]="user?.linkedinURL" />
+          </label>
+        </div>
+        <div class="more-detail">
+          <label class="profile-links"
+            >Location:
+            <input type="text" placeholder="City" [value]="user?.location?.city" />
+            <input type="text" placeholder="Country" [value]="user?.location?.country" />
+          </label>
+        </div>
       </div>
+    </div>
+    <div class="save-all-cont">
+      <button [disabled]="isSaveDIsabled" class="submit-changes-btn">Save</button>
+    </div>
+  </div>
+</section> -->
+
+<section class="profile-container">
+  <div class="profile-content">
+    <div class="top-content">
+      <div class="image-name">
+        <div class="profile-image-cont">
+          <div class="avatar-wrapper" (click)="fileUpload.click()">
+            <img [src]="imagePreview || '/images/google-logo.png'" alt="Profile image" />
+            <div class="overlay">Change</div>
+          </div>
+
+          <input
+            type="file"
+            #fileUpload
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            hidden
+          />
+        </div>
+
+        <input type="text" [value]="user?.fullName ?? ''" (input)="onFullNameInput($event)" />
+      </div>
+
+      <div class="profession-details">
+        <input
+          type="number"
+          placeholder="Phone Number"
+          [value]="user?.phoneNumber ?? ''"
+          (input)="onPhoneInput($event)"
+        />
+      </div>
+    </div>
+
+    <div class="bottom-content">
+      <div class="prior-info">
+        <div class="more-detail">
+          <label>
+            Email:
+            <input
+              type="email"
+              placeholder="Email"
+              [value]="user?.email ?? ''"
+              (input)="onEmailInput($event)"
+            />
+          </label>
+        </div>
+
+        <div class="more-detail">
+          <label>
+            Role:
+            <input
+              type="text"
+              placeholder="Profession..."
+              [value]="user?.jobTitle ?? ''"
+              (input)="onJobTitleInput($event)"
+            />
+          </label>
+        </div>
+
+        <div class="more-detail">
+          <label>
+            Experience:
+            <input
+              type="number"
+              placeholder="Years of experience..."
+              [value]="user?.yearsOfExperience ?? ''"
+              (input)="onExperienceInput($event)"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div class="sec-info">
+        <div class="more-detail">
+          <label class="profile-skills">
+            Skills:
+            <ng-container *ngFor="let skill of user?.skills ?? []; let i = index">
+              <input
+                type="text"
+                placeholder="Skill"
+                [value]="skill ?? ''"
+                (input)="onSkillInput(i, $event)"
+              />
+            </ng-container>
+
+            <div *ngIf="(user?.skills?.length ?? 0) === 0">
+              <div class="input-cont">
+                <input type="text" placeholder="Skill" [formControl]="newSkill" />
+                <button (click)="saveSkill()" class="add-btn">Add</button>
+              </div>
+            </div>
+
+            <div *ngIf="addingSkill() && (user?.skills?.length ?? 0) !== 0">
+              <div class="input-cont">
+                <input type="text" placeholder="Skill" [formControl]="newSkill" />
+                <button (click)="saveSkill()" class="add-btn">Add</button>
+              </div>
+            </div>
+
+            <button class="add-more-btn" (click)="addMoreSkill()">Add more</button>
+          </label>
+        </div>
+
+        <div class="more-detail">
+          <label class="profile-links">
+            Profile Links:
+            <input
+              type="text"
+              placeholder="GitHub"
+              [value]="user?.githubURL ?? ''"
+              (input)="onGithubInput($event)"
+            />
+            <input
+              type="text"
+              placeholder="LinkedIn"
+              [value]="user?.linkedinURL ?? ''"
+              (input)="onLinkedinInput($event)"
+            />
+          </label>
+        </div>
+
+        <div class="more-detail">
+          <label class="profile-links">
+            Location:
+            <input
+              type="text"
+              placeholder="City"
+              [value]="user?.location?.city ?? ''"
+              (input)="onCityInput($event)"
+            />
+            <input
+              type="text"
+              placeholder="Country"
+              [value]="user?.location?.country ?? ''"
+              (input)="onCountryInput($event)"
+            />
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-all-cont">
+      <button [disabled]="isSaveDisabled" (click)="submitChanges()" class="submit-changes-btn">
+        Save
+      </button>
     </div>
   </div>
 </section>

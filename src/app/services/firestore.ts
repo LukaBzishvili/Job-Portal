@@ -226,7 +226,7 @@ export class Firestore {
     }
 
     const ref = doc(db, 'users', user.uid);
-    console.log(user.uid);
+    // console.log(user.uid);
     const snap = await getDoc(ref);
 
     if (!snap.exists()) {

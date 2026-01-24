@@ -42,9 +42,20 @@ export class JobsPage implements OnInit {
     const value = String(filter[key]).replace(/^\//, '');
 
     const current = this.route.snapshot.queryParamMap.getAll(safeKey);
+
+    if (checked && value === '') {
+      this.router.navigate([], {
+        queryParams: { [safeKey]: null },
+        queryParamsHandling: 'merge',
+      });
+      return;
+    }
+
+    const cleanedCurrent = current.filter((v) => v !== '');
+
     const next = checked
-      ? Array.from(new Set([...current, value]))
-      : current.filter((v) => v !== value);
+      ? Array.from(new Set([...cleanedCurrent, value]))
+      : cleanedCurrent.filter((v) => v !== value);
 
     this.router.navigate([], {
       queryParams: {
@@ -64,7 +75,12 @@ export class JobsPage implements OnInit {
     this.isLoading.set(false);
 
     this.sub = this.route.queryParamMap.subscribe(async (map) => {
-      if (map.keys.length === 0) {
+      const hasRealFilters = map.keys.some((k) => {
+        const values = map.getAll(k);
+        return values.length > 0 && !values.includes('');
+      });
+
+      if (!hasRealFilters) {
         this.jobs = this.allJobs;
         this.cdr.markForCheck();
         return;
@@ -80,13 +96,18 @@ export class JobsPage implements OnInit {
     });
   }
 
-  ngonDestroy() {
+  ngOnDestroy() {
     this.sub?.unsubscribe();
   }
 
   isChecked(filter: any, key: string): boolean {
     const safeKey = filter.id.replace(/\s+/g, '');
     const value = String(filter[key]).replace(/^\//, '');
-    return this.route.snapshot.queryParamMap.getAll(safeKey).includes(value);
+
+    const selected = this.route.snapshot.queryParamMap.getAll(safeKey);
+
+    if (value === '') return selected.length === 0;
+
+    return selected.includes(value);
   }
 }
