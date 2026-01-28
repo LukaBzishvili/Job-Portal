@@ -183,6 +183,16 @@ export class Firestore {
     return doc(db, 'companies', companyId);
   }
 
+  async listCompanies(): Promise<Company[]> {
+    const q = query(collection(db, 'companies'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+
+    return snap.docs.map((d) => {
+      const data = d.data() as Omit<Company, 'id'>;
+      return { id: d.id, ...data };
+    });
+  }
+
   async registerUserWithOptionalCompany(uid: string, payload: RegisterWithCompanyPayload) {
     const batch = writeBatch(db);
 

@@ -109,7 +109,7 @@
         <ul class="jobs-list">
           @for (job of jobs(); track job.id) {
             <li class="company-job">
-              <app-main-job-card
+              <app-company-job-card
                 [title]="job.title"
                 [jobType]="job.jobType"
                 [salary]="job.salary"
@@ -121,7 +121,7 @@
                 [updatedAt]="job.updatedAt"
                 [id]="job.id"
                 [currency]="job.currency"
-              ></app-main-job-card>
+              ></app-company-job-card>
             </li>
           }
         </ul>

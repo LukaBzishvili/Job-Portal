@@ -46,7 +46,7 @@
               <input
                 [(ngModel)]="searchJobs"
                 type="text"
-                class="hero-input"
+                class="job-input"
                 placeholder="Job Title, Keyword..."
               />
             </div>
@@ -55,7 +55,7 @@
               <input
                 [(ngModel)]="searchLocation"
                 type="text"
-                class="hero-location-input"
+                class="job-location-input"
                 placeholder="Location"
               />
             </div>
@@ -65,7 +65,7 @@
         <h3>All jobs ({{ jobs.length }})</h3>
         <div class="jobs-list">
           <ng-container *ngFor="let job of jobs">
-            <app-main-job-card
+            <app-jobs-page-card
               [title]="job.title"
               [jobType]="job.jobType"
               [salary]="job.salary"
@@ -75,7 +75,7 @@
               [company]="job.company"
               [id]="job.id"
               [currency]="job.currency"
-            ></app-main-job-card>
+            ></app-jobs-page-card>
           </ng-container>
         </div>
       </div>

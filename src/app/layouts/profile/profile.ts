@@ -147,7 +147,7 @@ export class Profile implements OnInit {
       // photoURL: this.user.photoURL,
     };
 
-    console.log('Submitting user profile changes:', payload);
+    // console.log('Submitting user profile changes:', payload);
 
     this.isSaving = true;
 
@@ -255,14 +255,14 @@ export class Profile implements OnInit {
     this.markChanged();
   }
 
-  addMoreSkill(): void {
-    if (!this.user) return;
+  // addMoreSkill(): void {
+  //   if (!this.user) return;
 
-    const u: any = this.user as any;
-    u.skills ??= [];
+  //   const u: any = this.user as any;
+  //   u.skills ??= [];
 
-    this.addingSkill.set(true);
-  }
+  //   this.addingSkill.set(true);
+  // }
 
   saveSkill(): void {
     if (!this.user) return;
@@ -274,6 +274,8 @@ export class Profile implements OnInit {
       u.skills.push(skill);
 
       this.newSkill.reset();
+      this.addingSkill.set(true);
+
       this.markChanged();
     }
   }

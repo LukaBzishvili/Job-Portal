@@ -9,6 +9,7 @@ import { companyGuard } from './guards/company-guard';
 import { CompanyPage } from './layouts/company-page/company-page';
 import { VacancyPage } from './layouts/vacancy-page/vacancy-page';
 import { AddJobPage } from './layouts/add-job-page/add-job-page';
+import { Employers } from './layouts/employers/employers';
 
 export const routes: Routes = [
   { path: '', component: Main },
@@ -37,4 +38,5 @@ export const routes: Routes = [
     component: VacancyPage,
   },
   { path: 'post-job', component: AddJobPage, canActivate: [companyGuard] },
+  { path: 'employers', component: Employers },
 ];

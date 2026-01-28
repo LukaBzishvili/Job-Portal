@@ -1,0 +1,74 @@
+<section class="employers-container">
+  <div class="header">
+    <div>
+      <h2>Employers</h2>
+      <p>All companies registered on the platform.</p>
+    </div>
+    <div class="controls">
+      <input
+        class="search"
+        type="text"
+        placeholder="Search company, industry, city..."
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+      />
+      <button class="refresh" (click)="loadCompanies()" [disabled]="isLoading()">
+        {{ isLoading() ? 'Loading...' : 'Refresh' }}
+      </button>
+    </div>
+  </div>
+  @if (isLoading()) {
+    <div class="state">Loading companies...</div>
+  } @else if (error()) {
+    <div class="state error">
+      <div>{{ error() }}</div>
+      <button (click)="loadCompanies()">Try again</button>
+    </div>
+  } @else if (!filtered().length) {
+    <div class="state">No companies found.</div>
+  } @else {
+    <div class="grid">
+      @for (c of filtered(); track trackById($index, c)) {
+        <article class="card">
+          <div class="top">
+            <div class="logo">
+              @if (c.logoURL) {
+                <img [src]="c.logoURL!" [alt]="c.name + ' logo'" (error)="logoError($event)" />
+              }
+              <span class="initials">{{ initials(c.name) }}</span>
+            </div>
+            <div class="info">
+              <div class="row">
+                <h4>{{ c.name }}</h4>
+                @if (c.verified) {
+                  <span class="badge">Verified</span>
+                }
+              </div>
+              <div class="meta">
+                @if (c.industry) {
+                  <span>{{ c.industry }}</span>
+                }
+                @if (c.size) {
+                  <span>• {{ c.size }}</span>
+                }
+              </div>
+              <div class="loc">
+                {{ c.location?.city || ''
+                }}{{ c.location?.city && c.location?.country ? ', ' : '' }}
+                {{ c.location?.country || '' }}
+              </div>
+            </div>
+          </div>
+          <p class="desc">
+            {{ c.description || 'No description yet.' }}
+          </p>
+          <div class="actions">
+            @if (c.website) {
+              <button class="btn" (click)="openWebsite(c.website)">Website</button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

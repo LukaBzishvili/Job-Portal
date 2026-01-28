@@ -1,0 +1,208 @@
+.job-card-container {
+  width: 100%;
+  // background: linear-gradient(180deg, #fbf7ff 0%, #f6edff 100%);
+  background-color: #f6edff;
+  border: 1px solid rgba(99, 0, 179, 0.12);
+  padding: 18px;
+  border-radius: 14px;
+  box-sizing: border-box;
+
+  box-shadow:
+    0 10px 24px rgba(17, 24, 39, 0.08),
+    0 2px 6px rgba(17, 24, 39, 0.05);
+
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(99, 0, 179, 0.22);
+    box-shadow:
+      0 16px 32px rgba(17, 24, 39, 0.12),
+      0 4px 10px rgba(17, 24, 39, 0.08);
+  }
+
+  .job-card-left {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 170px;
+    gap: 14px;
+    align-items: center;
+
+    .job-main-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        color: #1f1f1f;
+        line-height: 1.2;
+      }
+
+      span {
+        width: fit-content;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        background: rgba(34, 197, 94, 0.12);
+        color: #128a3a;
+        border: 1px solid rgba(34, 197, 94, 0.25);
+      }
+
+      p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 13px;
+        line-height: 1.4;
+
+        // subtle highlight for numbers
+        strong {
+          color: #111827;
+        }
+      }
+    }
+
+    .job-main-middle {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      justify-content: center;
+
+      .employer-details {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+
+        img {
+          width: 36px;
+          height: 36px;
+          border-radius: 10px;
+          object-fit: cover;
+          background: #fff;
+          border: 1px solid rgba(17, 24, 39, 0.08);
+          box-shadow: 0 4px 10px rgba(17, 24, 39, 0.06);
+        }
+
+        .employer {
+          h5 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 800;
+            color: #111827;
+            line-height: 1.2;
+          }
+
+          p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: #6b7280;
+            line-height: 1.2;
+          }
+        }
+      }
+
+      .applicants {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+
+        .applicant-count {
+          margin: 0;
+          font-size: 12px;
+          font-weight: 700;
+          color: #4b5563;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: rgba(99, 0, 179, 0.08);
+          border: 1px solid rgba(99, 0, 179, 0.15);
+        }
+      }
+    }
+
+    .card-btns {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      a {
+        text-decoration: none;
+      }
+
+      .details {
+        width: 100%;
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 12px;
+        cursor: pointer;
+
+        border: 1px solid rgba(99, 0, 179, 0.55);
+        color: #6300b3;
+        background: rgba(255, 255, 255, 0.7);
+        font-weight: 800;
+
+        transition:
+          transform 160ms ease,
+          background 160ms ease,
+          box-shadow 160ms ease,
+          border-color 160ms ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          background: #ffffff;
+          border-color: rgba(99, 0, 179, 0.85);
+          box-shadow: 0 10px 18px rgba(99, 0, 179, 0.14);
+        }
+
+        &:active {
+          transform: translateY(0px);
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media only screen and (max-width: 900px) {
+  .job-card-container {
+    .job-card-left {
+      grid-template-columns: 1fr;
+      gap: 12px;
+
+      .card-btns {
+        justify-content: flex-start;
+
+        .details {
+          width: fit-content;
+          min-width: 140px;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .job-card-container {
+    padding: 14px;
+
+    .job-card-left {
+      .job-main-details h4 {
+        font-size: 15px;
+      }
+
+      .job-main-middle .employer-details img {
+        width: 34px;
+        height: 34px;
+      }
+    }
+  }
+}

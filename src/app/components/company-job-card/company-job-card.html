@@ -1,0 +1,28 @@
+<div class="job-card-container">
+  <div class="job-card-left">
+    <div class="job-main-details">
+      <h4>{{ cutText(title, 23) }}</h4>
+      <span>{{ jobType }}</span>
+      <p>
+        Salary: <strong>{{ salary }} {{ currency }}</strong>
+      </p>
+    </div>
+    <div class="job-main-middle">
+      <div class="employer-details">
+        <img src="/images/google-logo.png" alt="employer-logo" />
+        <div class="employer">
+          <h5>{{ company }}</h5>
+          <p>{{ companyLocation }}</p>
+        </div>
+      </div>
+      <div class="applicants">
+        <p class="applicant-count">{{ applicants?.length }} applicants</p>
+      </div>
+    </div>
+    <div class="card-btns">
+      <a [routerLink]="['/vacancy', id]">
+        <button class="details">View Details</button>
+      </a>
+    </div>
+  </div>
+</div>

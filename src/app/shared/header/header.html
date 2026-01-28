@@ -11,7 +11,7 @@
         <ul>
           <li><a routerLink="/">Home</a></li>
           <li><a routerLink="/jobs">Find Jobs</a></li>
-          <li><a routerLink="#">Employers</a></li>
+          <li><a routerLink="/employers">Employers</a></li>
           <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
             <a routerLink="/company">Admin</a>
           </li>
@@ -48,7 +48,7 @@
           <ul>
             <li><a routerLink="/">Home</a></li>
             <li><a routerLink="/jobs">Find Jobs</a></li>
-            <li><a routerLink="#">Employers</a></li>
+            <li><a routerLink="/employers">Employers</a></li>
             <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
               <a routerLink="/company">Admin</a>
             </li>

@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit, signal } from '@angular/core';
-import { MainJobCard } from '../../components/cards/main-job-card/main-job-card';
 import { CommonModule } from '@angular/common';
 import { Firestore } from '../../services/firestore';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
@@ -7,10 +6,11 @@ import { Filter, Job } from '../../models/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { JobsPageCard } from '../../components/jobs-page-card/jobs-page-card';
 
 @Component({
   selector: 'app-jobs-page',
-  imports: [MainJobCard, CommonModule, LoadingScreen, FormsModule],
+  imports: [JobsPageCard, CommonModule, LoadingScreen, FormsModule],
   templateUrl: './jobs-page.html',
   styleUrl: './jobs-page.scss',
 })
