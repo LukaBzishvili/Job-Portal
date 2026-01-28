@@ -12,8 +12,9 @@
           <li><a routerLink="/">Home</a></li>
           <li><a routerLink="/jobs">Find Jobs</a></li>
           <li><a routerLink="#">Employers</a></li>
-          <li><a routerLink="#">Admin</a></li>
-          <li><a routerLink="#">About Us</a></li>
+          <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
+            <a routerLink="/company">Admin</a>
+          </li>
           <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
         </ul>
       </nav>
@@ -48,7 +49,9 @@
             <li><a routerLink="/">Home</a></li>
             <li><a routerLink="/jobs">Find Jobs</a></li>
             <li><a routerLink="#">Employers</a></li>
-            <li><a routerLink="#">Admin</a></li>
+            <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
+              <a routerLink="/company">Admin</a>
+            </li>
             <li><a routerLink="#">About Us</a></li>
             <li><a routerLink="#">Contact Us</a></li>
             <li><a routerLink="/profile">Profile</a></li>

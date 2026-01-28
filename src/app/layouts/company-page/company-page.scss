@@ -1,0 +1,192 @@
+.company-page-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+
+  .company-left {
+    width: 30%;
+    min-width: 280px;
+    padding: 20px;
+    box-sizing: border-box;
+
+    .company-card {
+      width: 100%;
+      border-radius: 10px;
+      padding: 20px;
+      box-sizing: border-box;
+      background: white;
+      box-shadow:
+        0 10px 16px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+      .company-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+
+        .company-name {
+          font-size: 28px;
+          margin: 0;
+          margin-bottom: 20px;
+          width: 100%;
+          text-align: center;
+        }
+
+        .badge {
+          font-size: 14px;
+          padding: 6px 10px;
+          border-radius: 999px;
+          background: #6300b3;
+          color: white;
+          font-weight: 700;
+          white-space: nowrap;
+        }
+      }
+
+      .company-form {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+
+        label {
+          font-size: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          span {
+            color: rgb(236, 63, 63);
+          }
+
+          input,
+          textarea {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+
+            &:focus {
+              border-color: #6300b3;
+            }
+
+            &:disabled {
+              background: #f4f4f4;
+              color: #666;
+              cursor: not-allowed;
+            }
+          }
+
+          textarea {
+            resize: vertical;
+            min-height: 90px;
+          }
+        }
+
+        .save-btn {
+          width: 100%;
+          margin-top: 10px;
+          background-color: #6300b3;
+          color: white;
+          padding: 14px 0;
+          border-radius: 7px;
+          font-size: 16px;
+          font-weight: 700;
+          border: 1px solid transparent;
+          cursor: pointer;
+          transition: background-color 0.1s ease-in-out;
+
+          &:hover {
+            background-color: white;
+            color: #6300b3;
+            border: 1px solid #6300b3;
+          }
+
+          &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+          }
+        }
+
+        .small {
+          font-size: 12px;
+          color: gray;
+          margin: 0;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+
+  .company-right {
+    width: 70%;
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+
+    h2 {
+      width: 100%;
+      max-width: 1250px;
+      font-size: 36px;
+      margin: 0;
+      text-align: center;
+    }
+
+    p {
+      width: 100%;
+      max-width: 1250px;
+      margin-top: 15px;
+      color: gray;
+      font-size: 18px;
+    }
+
+    .jobs-list {
+      max-height: 100vh;
+      overflow-y: scroll;
+      margin-top: 50px;
+      width: 100%;
+      max-width: 1250px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      gap: 25px;
+
+      .company-job {
+        list-style-type: none;
+      }
+    }
+  }
+}
+
+/* Responsive */
+@media (max-width: 1050px) {
+  .company-page-container {
+    flex-direction: column;
+
+    .company-left,
+    .company-right {
+      width: 100%;
+    }
+
+    .company-left {
+      padding-bottom: 0;
+    }
+
+    .company-right {
+      h2,
+      p {
+        max-width: 100%;
+      }
+    }
+  }
+}

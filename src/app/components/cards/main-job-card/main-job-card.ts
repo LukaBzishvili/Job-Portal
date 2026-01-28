@@ -21,6 +21,16 @@ export class MainJobCard {
   @Input() createdAt?: any;
   @Input() updatedAt?: any;
 
+  cutText(text: string | undefined, maxLength: number): string {
+    if (!text) return '';
+
+    if (text.length <= maxLength) {
+      return text;
+    }
+
+    return text.slice(0, maxLength) + '...';
+  }
+
   navigateToJobLink() {
     if (this.link) {
       this.router.navigateByUrl(this.link);

@@ -3,8 +3,10 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 30px;
+    padding: 0 20px;
+    box-sizing: border-box;
     .jobs-search {
       margin-top: 50px;
       display: flex;
@@ -79,7 +81,8 @@
         .filter-details {
           padding: 20px;
           border-radius: 9px;
-          background-color: #f2f2f2;
+          // background-color: #f2f2f2;
+          background-color: #f8f2fc;
           display: flex;
           align-items: flex-start;
           justify-content: flex-start;
@@ -90,7 +93,8 @@
             width: 100%;
             .filter-header {
               background-color: transparent;
-              border: 1.5px solid rgb(198, 197, 197);
+              // border: 1.5px solid rgb(198, 197, 197);
+              border: 1.5px solid #6200b337;
               // border-radius: 9px;
               width: 100%;
               display: flex;
@@ -122,12 +126,15 @@
               max-height: 0;
               overflow: hidden;
               transition: max-height 0.5s ease;
-              border-left: 1.5px solid rgb(198, 197, 197);
-              border-right: 1.5px solid rgb(198, 197, 197);
+              // border-left: 1.5px solid rgb(198, 197, 197);
+              // border-right: 1.5px solid rgb(198, 197, 197);
+              border-left: 1.5px solid #6200b337;
+              border-right: 1.5px solid #6200b337;
               box-sizing: border-box;
               &.open {
                 max-height: 300px;
-                border-bottom: 1.5px solid rgb(198, 197, 197);
+                border-bottom: 1.5px solid #6200b337;
+                // border-bottom: 1.5px solid rgb(198, 197, 197);
               }
               .option {
                 padding: 3px 0;
@@ -187,14 +194,16 @@
                 // border-bottom-left-radius: 7px;
                 // border-bottom-right-radius: 7px;
                 margin-top: 0;
-                border-left: 1.5px solid rgb(198, 197, 197);
-                border-right: 1.5px solid rgb(198, 197, 197);
-
+                // border-left: 1.5px solid rgb(198, 197, 197);
+                // border-right: 1.5px solid rgb(198, 197, 197);
+                border-left: 1.5px solid #6200b337;
+                border-right: 1.5px solid #6200b337;
                 .option {
                   width: 100%;
                   padding: 5px 2px;
 
-                  border-bottom: 1.5px solid rgb(198, 197, 197);
+                  // border-bottom: 1.5px solid rgb(198, 197, 197);
+                  border-bottom: 1.5px solid #6200b337;
                 }
               }
             }
@@ -203,6 +212,10 @@
       }
       .jobs-list-cont {
         width: 100%;
+        .jobs-search-cont {
+          align-items: center;
+          justify-content: center;
+        }
         h3 {
           text-align: center;
           margin-bottom: 40px;
@@ -283,6 +296,52 @@
           align-items: center;
           justify-content: center;
           grid-template-columns: auto;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .jobs-page-container {
+    .jobs-search-cont {
+      justify-content: center;
+      padding: 0 10px;
+      box-sizing: border-box;
+      .jobs-search {
+        background-color: transparent;
+        flex-direction: column;
+        width: 100%;
+        margin: 30px 0;
+        .input-cont {
+          background-color: white;
+          border-radius: 7px;
+          border-bottom: 1px solid gray;
+          padding: 10px 0;
+          .hero-input {
+            border: none;
+            width: 100%;
+            max-width: none;
+            font-size: 24px;
+          }
+        }
+        .location-input-cont {
+          background-color: white;
+          border-radius: 7px;
+          padding: 10px 0;
+          .hero-location-input {
+            font-size: 24px;
+            width: 100%;
+            max-width: none;
+          }
+        }
+        .search-btn {
+          width: 100%;
+          font-size: 30px;
+          font-weight: 600;
+          height: fit-content;
+          margin: 0;
+          padding: 7px 0;
         }
       }
     }

@@ -12,9 +12,11 @@ import {
   orderBy,
   limit,
   getDoc,
+  writeBatch,
+  where,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebase';
-import { Job, User } from '../models/firestore';
+import { Company, Job, RegisterWithCompanyPayload, User } from '../models/firestore';
 import { ParamMap } from '@angular/router';
 
 @Injectable({
@@ -33,6 +35,61 @@ export class Firestore {
     return snap.docs.map((d) => {
       const data = d.data() as Omit<Job, 'id'>;
       return { id: d.id, ...data };
+    });
+  }
+
+  async listJobsForCurrentCompany(): Promise<Job[]> {
+    const profile = await this.getCurrentUserProfile();
+    const companyId = (profile as any)?.companyId;
+
+    if (!companyId) return [];
+
+    const q = query(
+      this.jobsListRef(),
+      where('companyId', '==', companyId),
+      // orderBy('createdAt', 'desc'),
+    );
+
+    const snap = await getDocs(q);
+
+    return snap.docs.map((d) => {
+      const data = d.data() as Omit<Job, 'id'>;
+      return { id: d.id, ...data };
+    });
+  }
+
+  async getCurrentCompany(): Promise<Company | null> {
+    const profile = await this.getCurrentUserProfile();
+    const companyId = (profile as any)?.companyId;
+
+    if (!companyId) return null;
+
+    const snap = await getDoc(this.companyDocRef(companyId));
+    if (!snap.exists()) return null;
+
+    return {
+      id: snap.id,
+      ...(snap.data() as Omit<Company, 'id'>),
+    };
+  }
+
+  async getCurrentCompanyId(): Promise<string | null> {
+    const profile = await this.getCurrentUserProfile();
+    const companyId = (profile as any)?.companyId;
+    return companyId ?? null;
+  }
+
+  async updateCurrentCompany(data: any) {
+    const companyId = await this.getCurrentCompanyId();
+    if (!companyId) throw new Error('No companyId linked to this user');
+
+    const ref = this.companyDocRef(companyId);
+
+    const cleaned = Object.fromEntries(Object.entries(data).filter(([, v]) => v !== undefined));
+
+    return updateDoc(ref, {
+      ...cleaned,
+      updatedAt: serverTimestamp(),
     });
   }
 
@@ -112,6 +169,92 @@ export class Firestore {
         matchesLocation
       );
     });
+  }
+
+  private companyDocRef(companyId: string) {
+    return doc(db, 'companies', companyId);
+  }
+
+  async registerUserWithOptionalCompany(uid: string, payload: RegisterWithCompanyPayload) {
+    const batch = writeBatch(db);
+
+    const userRef = this.userDocRef(uid);
+
+    const isCompany = payload.accountType === 'company';
+    const companyId = isCompany ? uid : null;
+    const companyRef = isCompany ? this.companyDocRef(uid) : null;
+
+    batch.set(userRef, {
+      fullName: payload.fullName,
+      email: payload.email,
+      phoneNumber: payload.phoneNumber ?? null,
+      photoURL: null,
+
+      role: 'user',
+
+      accountType: payload.accountType,
+      companyId: companyId,
+
+      isEmailVerified: false,
+      isProfileComplete: false,
+
+      jobTitle: null,
+      experienceLevel: null,
+      yearsOfExperience: null,
+      skills: [],
+
+      location: {
+        country: null,
+        city: null,
+        timezone: null,
+      },
+
+      workPreferences: {
+        remote: false,
+        hybrid: false,
+        onsite: false,
+      },
+
+      resumeURL: null,
+      portfolioURL: null,
+      linkedinURL: null,
+      githubURL: null,
+
+      savedJobs: [],
+      appliedJobs: [],
+
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
+
+    if (isCompany) {
+      const companyName = (payload.companyName ?? '').trim();
+      if (!companyName) {
+        throw new Error('companyName is required for company accounts');
+      }
+
+      batch.set(companyRef!, {
+        name: companyName,
+        ownerUid: uid,
+
+        website: null,
+        logoURL: null,
+        industry: null,
+        size: null,
+        description: null,
+        location: {
+          country: null,
+          city: null,
+        },
+
+        verified: false,
+
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    }
+
+    await batch.commit();
   }
 
   parseSalaryRange(values: string[]): [number | null, number | null] {

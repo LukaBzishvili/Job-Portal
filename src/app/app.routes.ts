@@ -5,6 +5,8 @@ import { RegisterPage } from './layouts/register-page/register-page';
 import { authGuard } from './guards/auth-guard';
 import { JobsPage } from './layouts/jobs-page/jobs-page';
 import { Profile } from './layouts/profile/profile';
+import { companyGuard } from './guards/company-guard';
+import { CompanyPage } from './layouts/company-page/company-page';
 
 export const routes: Routes = [
   { path: '', component: Main },
@@ -22,5 +24,10 @@ export const routes: Routes = [
     path: 'profile',
     canActivate: [authGuard],
     component: Profile,
+  },
+  {
+    path: 'company',
+    canActivate: [companyGuard],
+    component: CompanyPage,
   },
 ];

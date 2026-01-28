@@ -6,6 +6,7 @@ import { LoadingScreen } from './components/loading-screen/loading-screen';
 import { auth } from './firebase/firebase';
 import { onAuthStateChanged, Unsubscribe } from 'firebase/auth';
 import { LoadingService } from './services/loading-service';
+import { UserStore } from './stores/user.store';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,10 @@ export class App implements OnDestroy {
   isLoggedIn = signal(false);
   private unsubAuth?: Unsubscribe;
 
-  constructor(public loading: LoadingService) {
+  constructor(
+    public loading: LoadingService,
+    private userStore: UserStore,
+  ) {
     this.loading.track(
       new Promise<void>((resolve) => {
         this.unsubAuth = onAuthStateChanged(auth, (user) => {

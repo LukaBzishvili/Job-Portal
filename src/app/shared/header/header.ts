@@ -1,7 +1,8 @@
-import { Component, Input, input, OnInit, signal } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { auth } from '../../firebase/firebase';
+import { Auth } from '../../services/auth';
+import { UserStore } from '../../stores/user.store';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +12,20 @@ import { auth } from '../../firebase/firebase';
   styleUrl: './header.scss',
 })
 export class Header {
+  private authService = inject(Auth);
+  private userStore = inject(UserStore);
+
+  // fast auth state comes from App (no flicker)
   @Input() isLoggedIn = false;
-  @Input() isLoading = true;
+
+  // company role comes from Firestore profile (via store)
+  isCompany = this.userStore.isCompany;
+  profileLoading = this.userStore.loading;
+
   isHamburgerOpen = false;
 
   logOut() {
-    auth.signOut();
+    this.authService.signOutUser();
   }
 
   handleHamburger() {

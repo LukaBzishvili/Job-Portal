@@ -7,7 +7,7 @@
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 40px;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 
@@ -74,6 +74,8 @@
   }
 
   .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
     border-top: 1px solid #cbb3df;
     margin-top: 40px;
     padding-top: 20px;

@@ -63,6 +63,50 @@
             />
           </label>
         </div>
+        <div class="account-type-cont">
+          <label class="radio">
+            <input
+              type="radio"
+              name="accountType"
+              value="candidate"
+              [checked]="registerModel().accountType === 'candidate'"
+              (change)="setAccountType('candidate')"
+            />
+            Candidate
+          </label>
+
+          <label class="radio">
+            <input
+              type="radio"
+              name="accountType"
+              value="company"
+              [checked]="registerModel().accountType === 'company'"
+              (change)="setAccountType('company')"
+            />
+            Company
+          </label>
+        </div>
+
+        @if (registerModel().accountType === 'company') {
+          <div class="company-name-input-cont">
+            <label>
+              Company name <span>*</span>
+              <input
+                type="text"
+                [formField]="registerForm.companyName"
+                placeholder="Enter company name"
+              />
+            </label>
+
+            @if (registerForm.companyName().touched() && registerForm.companyName().invalid()) {
+              <ul class="error">
+                @for (error of registerForm.companyName().errors(); track error) {
+                  <li>{{ error.message }}</li>
+                }
+              </ul>
+            }
+          </div>
+        }
         <button type="submit" class="register-btn">Register</button>
         <div class="other-login">
           <div class="other-login-text">

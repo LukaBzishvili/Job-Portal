@@ -1,0 +1,137 @@
+@if (isLoading()) {
+  <app-loading-screen [fullscreen]="true" text="Loading jobs..." [dimBackground]="true" />
+} @else {
+  <section class="company-page-container">
+    <div class="company-left">
+      @if (company()) {
+        <div class="company-card">
+          <div class="company-header">
+            <h2 class="company-name">Company Profile</h2>
+            @if (company()?.verified) {
+              <span class="badge">Verified</span>
+            }
+          </div>
+
+          <div class="company-form">
+            <label>
+              Company name <span>*</span>
+              <input
+                type="text"
+                [ngModel]="companyForm().name"
+                (ngModelChange)="setCompanyField('name', $event)"
+                placeholder="Enter company name"
+              />
+            </label>
+
+            <label>
+              Website
+              <input
+                type="text"
+                [ngModel]="companyForm().website"
+                (ngModelChange)="setCompanyField('website', $event)"
+                placeholder="https://example.com"
+              />
+            </label>
+
+            <label>
+              Logo URL
+              <input
+                type="text"
+                [ngModel]="companyForm().logoURL"
+                (ngModelChange)="setCompanyField('logoURL', $event)"
+                placeholder="Paste image URL"
+              />
+            </label>
+
+            <label>
+              Industry
+              <input
+                type="text"
+                [ngModel]="companyForm().industry"
+                (ngModelChange)="setCompanyField('industry', $event)"
+                placeholder="E.g. IT, Finance"
+              />
+            </label>
+
+            <label>
+              Company size
+              <input
+                type="text"
+                [ngModel]="companyForm().size"
+                (ngModelChange)="setCompanyField('size', $event)"
+                placeholder="E.g. 1-10, 11-50"
+              />
+            </label>
+
+            <label>
+              City
+              <input
+                type="text"
+                [ngModel]="companyForm().city"
+                (ngModelChange)="setCompanyLocationField('city', $event)"
+                placeholder="City"
+              />
+            </label>
+
+            <label>
+              Country
+              <input
+                type="text"
+                [ngModel]="companyForm().country"
+                (ngModelChange)="setCompanyLocationField('country', $event)"
+                placeholder="Country"
+              />
+            </label>
+
+            <label>
+              Description
+              <textarea
+                rows="4"
+                [ngModel]="companyForm().description"
+                (ngModelChange)="setCompanyField('description', $event)"
+                placeholder="Tell candidates about your company..."
+              ></textarea>
+            </label>
+
+            <button class="save-btn" type="button" (click)="saveCompany()" [disabled]="isSaving()">
+              {{ isSaving() ? 'Saving...' : 'Save company profile' }}
+            </button>
+
+            <p class="small"><b>Company ID:</b> {{ company()?.id }}</p>
+          </div>
+        </div>
+      } @else {
+        <div class="company-card">
+          <h3>No company profile found</h3>
+          <p>This account is not linked to a company.</p>
+        </div>
+      }
+    </div>
+
+    <div class="company-right">
+      <h2>Your job vacancies</h2>
+
+      @if (!jobs().length) {
+        <p>No jobs posted yet.</p>
+      } @else {
+        <ul class="jobs-list">
+          @for (job of jobs(); track job.id) {
+            <li class="company-job">
+              <app-main-job-card
+                [title]="job.title"
+                [jobType]="job.jobType"
+                [salary]="job.salary"
+                [companyLocation]="job.companyLocation"
+                [applicants]="job.applicants"
+                [link]="job.link"
+                [company]="job.company"
+                [createdAt]="job.createdAt"
+                [updatedAt]="job.updatedAt"
+              ></app-main-job-card>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </section>
+}

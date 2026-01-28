@@ -9,6 +9,7 @@ export type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 't
 export interface Job {
   id?: string;
 
+  companyId: string;
   title: string;
   company: string;
   companyLocation: string;
@@ -30,6 +31,31 @@ export interface Filter {
   open?: boolean;
   [key: string]: any;
 }
+
+export type AccountType = 'candidate' | 'company';
+
+export interface Company {
+  id?: string;
+  name: string;
+  ownerUid: string;
+  website?: string | null;
+  logoURL?: string | null;
+  industry?: string | null;
+  size?: string | null;
+  description?: string | null;
+  location?: { country?: string | null; city?: string | null };
+  verified?: boolean;
+  createdAt?: any;
+  updatedAt?: any;
+}
+
+export type RegisterWithCompanyPayload = {
+  fullName: string;
+  email: string;
+  phoneNumber?: number;
+  accountType: AccountType;
+  companyName?: string;
+};
 
 export interface User {
   id: string;
