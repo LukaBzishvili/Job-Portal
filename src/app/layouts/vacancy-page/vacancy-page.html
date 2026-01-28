@@ -1,1 +1,73 @@
-<p>vacancy-page works!</p>
+<app-loading-screen
+  *ngIf="loading.isLoading()"
+  [fullscreen]="true"
+  text="Loading vacancy..."
+  [dimBackground]="true"
+/>
+<section class="vacancy-container">
+  <ng-container *ngIf="!loading.isLoading()">
+    <ng-container *ngIf="vacancy as v; else notFound">
+      <div class="vacancy-card">
+        <h1 class="vacancy-title">{{ v.title }}</h1>
+
+        <div class="vacancy-meta">
+          <span class="jobtype-pill">{{ prettify(v.jobType) }}</span>
+          <span class="salary"
+            >Salary: <b>{{ v.salary || '—' }}</b></span
+          >
+        </div>
+        <div class="company-row">
+          <div class="company-info">
+            <div class="company-name">{{ v.company }}</div>
+            <div class="company-location">{{ v.companyLocation }}</div>
+          </div>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail">
+            <div class="label">Work mode</div>
+            <div class="value">{{ prettify(v.workMode) }}</div>
+          </div>
+
+          <div class="detail">
+            <div class="label">Job function</div>
+            <div class="value">{{ prettify(v.jobFunction) }}</div>
+          </div>
+
+          <div class="detail">
+            <div class="label">Experience</div>
+            <div class="value">{{ prettify(v.experienceLevel) }}</div>
+          </div>
+
+          <div class="detail">
+            <div class="label">Created</div>
+            <div class="value">{{ formatDate(v.createdAt) }}</div>
+          </div>
+
+          <div class="detail">
+            <div class="label">Updated</div>
+            <div class="value">{{ formatDate(v.updatedAt) }}</div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button
+            class="btn primary"
+            (click)="apply()"
+            [disabled]="vacancy.applicants.includes(auth.currentUser?.uid || '')"
+          >
+            {{
+              vacancy.applicants.includes(auth.currentUser?.uid || '')
+                ? 'Already applied'
+                : 'Apply now'
+            }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #notFound>
+      <p style="color: gray">Vacancy not found.</p>
+    </ng-template>
+  </ng-container>
+</section>

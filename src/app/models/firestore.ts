@@ -6,6 +6,8 @@ export type WorkMode = 'remote' | 'on-site' | 'hybrid';
 
 export type JobType = 'full-time' | 'part-time' | 'contract' | 'internship' | 'temporary';
 
+export type Currency = 'GEL' | 'USD' | 'EUR' | 'GBP' | 'INR';
+
 export interface Job {
   id?: string;
 
@@ -16,6 +18,8 @@ export interface Job {
   salary: number | string;
   link: string;
   applicants: string[];
+  description: string;
+  currency: Currency;
 
   jobFunction: JobFunction;
   experienceLevel: ExperienceLevel;

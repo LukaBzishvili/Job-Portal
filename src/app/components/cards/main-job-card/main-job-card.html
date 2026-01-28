@@ -3,7 +3,7 @@
     <h4>{{ cutText(title, 30) }}</h4>
     <p>
       <span>{{ jobType }}</span>
-      Salary: {{ salary }} EUR
+      Salary: {{ salary }} {{ currency }}
     </p>
     <div class="employer-details">
       <img src="/images/google-logo.png" alt="employer-logo" />
@@ -21,7 +21,9 @@
       <p class="applicant-count">{{ applicants?.length }} applicants</p>
     </div>
     <div class="card-btns">
-      <button class="details">View Details</button>
+      <a [routerLink]="['/vacancy', id]">
+        <button class="details">View Details</button>
+      </a>
       <button class="apply">Apply Now</button>
     </div>
   </div>

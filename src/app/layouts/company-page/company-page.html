@@ -11,7 +11,6 @@
               <span class="badge">Verified</span>
             }
           </div>
-
           <div class="company-form">
             <label>
               Company name <span>*</span>
@@ -22,7 +21,6 @@
                 placeholder="Enter company name"
               />
             </label>
-
             <label>
               Website
               <input
@@ -32,7 +30,6 @@
                 placeholder="https://example.com"
               />
             </label>
-
             <label>
               Logo URL
               <input
@@ -42,7 +39,6 @@
                 placeholder="Paste image URL"
               />
             </label>
-
             <label>
               Industry
               <input
@@ -52,7 +48,6 @@
                 placeholder="E.g. IT, Finance"
               />
             </label>
-
             <label>
               Company size
               <input
@@ -62,7 +57,6 @@
                 placeholder="E.g. 1-10, 11-50"
               />
             </label>
-
             <label>
               City
               <input
@@ -72,7 +66,6 @@
                 placeholder="City"
               />
             </label>
-
             <label>
               Country
               <input
@@ -82,7 +75,6 @@
                 placeholder="Country"
               />
             </label>
-
             <label>
               Description
               <textarea
@@ -92,11 +84,9 @@
                 placeholder="Tell candidates about your company..."
               ></textarea>
             </label>
-
             <button class="save-btn" type="button" (click)="saveCompany()" [disabled]="isSaving()">
               {{ isSaving() ? 'Saving...' : 'Save company profile' }}
             </button>
-
             <p class="small"><b>Company ID:</b> {{ company()?.id }}</p>
           </div>
         </div>
@@ -110,7 +100,9 @@
 
     <div class="company-right">
       <h2>Your job vacancies</h2>
-
+      <div class="add-job-container">
+        <button class="btn primary" [routerLink]="'/post-job'">Post Job</button>
+      </div>
       @if (!jobs().length) {
         <p>No jobs posted yet.</p>
       } @else {
@@ -127,6 +119,8 @@
                 [company]="job.company"
                 [createdAt]="job.createdAt"
                 [updatedAt]="job.updatedAt"
+                [id]="job.id"
+                [currency]="job.currency"
               ></app-main-job-card>
             </li>
           }

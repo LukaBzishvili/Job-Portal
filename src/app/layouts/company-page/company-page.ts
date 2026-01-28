@@ -5,6 +5,7 @@ import { Job } from '../../models/firestore';
 import { LoadingScreen } from '../../components/loading-screen/loading-screen';
 import { MainJobCard } from '../../components/cards/main-job-card/main-job-card';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 type CompanyForm = {
   name: string;
@@ -20,7 +21,7 @@ type CompanyForm = {
 @Component({
   selector: 'app-company-page',
   standalone: true,
-  imports: [CommonModule, LoadingScreen, MainJobCard, FormsModule],
+  imports: [CommonModule, LoadingScreen, MainJobCard, FormsModule, RouterLink],
   templateUrl: './company-page.html',
   styleUrl: './company-page.scss',
 })

@@ -1,0 +1,167 @@
+<section class="add-job-page">
+  <div class="card">
+    <div class="header">
+      <h1>Post a job</h1>
+      <p>Find the best talent for your company</p>
+    </div>
+
+    <div class="status error" *ngIf="error">{{ error }}</div>
+    <div class="status success" *ngIf="success">{{ success }}</div>
+
+    <!-- ✅ IMPORTANT: all formControlName inputs must be inside this form -->
+    <form *ngIf="form" class="form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field full">
+        <label>Job Title</label>
+        <input
+          class="input"
+          placeholder="Add job title, role vacancies etc"
+          formControlName="title"
+          [class.invalid]="isInvalid('title')"
+        />
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Tags</label>
+          <input class="input" placeholder="Job keyword, tags etc." formControlName="tags" />
+        </div>
+
+        <div class="field">
+          <label>Job Role</label>
+          <select class="input select" formControlName="jobFunction">
+            <option *ngFor="let f of jobFunctions" [value]="f.value">{{ f.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ✅ Salary block with currency options -->
+      <div class="field full">
+        <label>Salary</label>
+
+        <div class="salary-row">
+          <div class="salary-group">
+            <div class="sub-label">Min Salary</div>
+            <div class="salary-input">
+              <input
+                class="input"
+                type="number"
+                min="0"
+                placeholder="Minimum Salary..."
+                formControlName="minSalary"
+              />
+              <span class="currency">{{ selectedCurrency }}</span>
+            </div>
+          </div>
+
+          <div class="salary-group">
+            <div class="sub-label">Max Salary</div>
+            <div class="salary-input">
+              <input
+                class="input"
+                type="number"
+                min="0"
+                placeholder="Maximum Salary..."
+                formControlName="maxSalary"
+              />
+              <span class="currency">{{ selectedCurrency }}</span>
+            </div>
+          </div>
+
+          <div class="salary-group">
+            <div class="sub-label">Currency</div>
+            <select class="input select" formControlName="currency">
+              <option *ngFor="let c of currencyOptions" [value]="c.value">
+                {{ c.label }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label>Job Type</label>
+          <select class="input select" formControlName="jobType">
+            <option *ngFor="let t of jobTypes" [value]="t.value">{{ t.label }}</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Work Mode</label>
+          <select class="input select" formControlName="workMode">
+            <option *ngFor="let w of workModes" [value]="w.value">{{ w.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-row">
+        <div class="field">
+          <label>Job Level</label>
+          <select class="input select" formControlName="experienceLevel">
+            <option *ngFor="let l of experienceLevels" [value]="l.value">{{ l.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Location</label>
+        <div class="grid-2">
+          <div class="field nested">
+            <div class="sub-label">Country</div>
+            <input class="input" placeholder="Select..." formControlName="country" />
+          </div>
+          <div class="field nested">
+            <div class="sub-label">City</div>
+            <input class="input" placeholder="Select..." formControlName="city" />
+          </div>
+        </div>
+      </div>
+
+      <div class="field full">
+        <label>Job Link</label>
+        <input
+          class="input"
+          placeholder="https://example.com/jobs/your-job"
+          formControlName="link"
+          [class.invalid]="isInvalid('link')"
+        />
+      </div>
+
+      <div class="field full">
+        <label>Job Description</label>
+        <div class="editor">
+          <textarea
+            class="editor-area"
+            placeholder="Add your description..."
+            formControlName="description"
+          ></textarea>
+
+          <div class="toolbar">
+            <div class="tool">
+              <span class="tool-chip">14</span>
+              <span class="tool-caret">▾</span>
+            </div>
+            <button type="button" class="tool-btn">T</button>
+            <button type="button" class="tool-btn dot">●</button>
+            <button type="button" class="tool-btn"><b>B</b></button>
+            <button type="button" class="tool-btn"><i>I</i></button>
+            <button type="button" class="tool-btn"><u>U</u></button>
+            <span class="divider"></span>
+            <button type="button" class="tool-btn">≡</button>
+            <button type="button" class="tool-btn">≣</button>
+            <button type="button" class="tool-btn">↕</button>
+            <span class="divider"></span>
+            <button type="button" class="tool-btn">🔗</button>
+            <button type="button" class="tool-btn">☺</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" type="submit" [disabled]="loading.isLoading()">
+          {{ loading.isLoading() ? 'Posting...' : 'Post Job' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,303 @@
+:host {
+  display: block;
+}
+
+$purple: #6300b3;
+$mauve: #6a5a7b;
+$gray: gray;
+$black: #000;
+
+.salary-group {
+  flex: 1;
+}
+
+.salary-group:nth-child(2) {
+  margin: 0 10px;
+}
+
+.add-job-page {
+  min-height: calc(100vh - 80px);
+  padding: 26px 16px;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 18px 18px 22px;
+}
+
+.header {
+  margin-bottom: 14px;
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    color: $black;
+    font-weight: 800;
+  }
+
+  p {
+    margin: 6px 0 0 0;
+    color: $gray;
+    font-size: 13px;
+  }
+}
+
+.form {
+  display: block;
+}
+
+.field {
+  margin-bottom: 14px;
+
+  &.full {
+    width: 100%;
+  }
+
+  &.nested {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    color: $black;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+}
+
+.sub-label {
+  font-size: 11px;
+  color: $gray;
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.input {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  padding: 0 15px;
+  font-size: 13px;
+  outline: none;
+  color: $black;
+  background: #fff;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+  }
+
+  &:focus {
+    border-color: rgba(99, 0, 179, 0.5);
+    box-shadow: 0 0 0 4px rgba(99, 0, 179, 0.08);
+  }
+
+  &.invalid {
+    border-color: rgba(160, 0, 0, 0.45);
+    box-shadow: 0 0 0 4px rgba(160, 0, 0, 0.06);
+  }
+}
+
+.select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(0, 0, 0, 0.45) 50%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.45) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 17px,
+    calc(100% - 13px) 17px;
+  background-size:
+    5px 5px,
+    5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.salary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.salary-input {
+  position: relative;
+
+  .currency {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    color: $mauve;
+    font-weight: 800;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  input.input {
+    padding-right: 64px;
+  }
+}
+
+.select.ghost {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.editor {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+
+  &.invalid {
+    border-color: rgba(160, 0, 0, 0.45);
+  }
+}
+
+.editor-area {
+  width: 100%;
+  min-height: 140px;
+  resize: vertical;
+  border: none;
+  outline: none;
+  padding: 12px;
+  font-size: 13px;
+  color: $black;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+  }
+}
+
+.toolbar {
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 4px;
+}
+
+.tool-chip {
+  height: 28px;
+  min-width: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  color: $black;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.tool-caret {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 12px;
+}
+
+.tool-btn {
+  height: 28px;
+  min-width: 28px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+  color: $black;
+
+  &:hover {
+    border-color: rgba(99, 0, 179, 0.35);
+    box-shadow: 0 6px 14px rgba(99, 0, 179, 0.1);
+  }
+}
+
+.tool-btn.dot {
+  font-size: 10px;
+}
+
+.divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 0 4px;
+}
+
+.hint {
+  margin-top: 8px;
+  color: rgba(160, 0, 0, 0.85);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.actions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  height: 40px;
+  padding: 0 18px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 0.08s ease,
+    box-shadow 0.15s ease;
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn.primary {
+  background: $purple;
+  color: #fff;
+
+  &:hover {
+    box-shadow: 0 12px 22px rgba(99, 0, 179, 0.22);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+}

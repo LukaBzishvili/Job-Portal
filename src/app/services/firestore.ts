@@ -171,6 +171,14 @@ export class Firestore {
     });
   }
 
+  getSpecificJob(jobId: string): Promise<Job | null> {
+    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+    return getDoc(jobRef).then((snap) => {
+      if (!snap.exists()) return null;
+      return { id: snap.id, ...(snap.data() as Omit<Job, 'id'>) };
+    });
+  }
+
   private companyDocRef(companyId: string) {
     return doc(db, 'companies', companyId);
   }
@@ -299,6 +307,28 @@ export class Firestore {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
+  }
+
+  async applyToJob(jobId: string) {
+    const user = auth.currentUser;
+    if (!user) throw new Error('Not authenticated');
+
+    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+    const userRef = doc(db, 'users', user.uid);
+
+    const batch = writeBatch(db);
+
+    batch.update(jobRef, {
+      applicants: arrayUnion(user.uid),
+      updatedAt: serverTimestamp(),
+    });
+
+    batch.update(userRef, {
+      appliedJobs: arrayUnion(jobId),
+      updatedAt: serverTimestamp(),
+    });
+
+    await batch.commit();
   }
 
   async addApplicant(jobId: string, userId: string) {
