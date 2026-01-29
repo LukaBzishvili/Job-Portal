@@ -1,0 +1,63 @@
+<app-loading-screen
+  *ngIf="loading.isLoading()"
+  [fullscreen]="true"
+  text="Loading applicants..."
+  [dimBackground]="true"
+/>
+
+<section class="applicants-container" *ngIf="!loading.isLoading()">
+  <ng-container *ngIf="job as j; else notFound">
+    <div class="card">
+      <div class="top">
+        <div>
+          <h1 class="title">Applicants</h1>
+          <p class="subtitle">
+            For: <b>{{ j.title }}</b> • {{ j.company }}
+          </p>
+        </div>
+        <ng-container *ngIf="job as j">
+          <a [routerLink]="['/vacancy', j.id]">Back</a>
+        </ng-container>
+      </div>
+      <div class="empty" *ngIf="!applicants.length">No one has applied yet.</div>
+      <div class="grid" *ngIf="applicants.length">
+        <div class="applicant" *ngFor="let u of applicants">
+          <div class="avatar">
+            <img *ngIf="u.photoURL" [src]="u.photoURL" alt="avatar" />
+            <div *ngIf="!u.photoURL" class="fallback">
+              {{ (u.fullName || 'U').slice(0, 1).toUpperCase() }}
+            </div>
+          </div>
+          <div class="info">
+            <div class="name">{{ u.fullName }}</div>
+            <div class="email">{{ u.email }}</div>
+            <div class="meta">
+              <span *ngIf="u.jobTitle">{{ u.jobTitle }}</span>
+              <span *ngIf="u.location?.city || u.location?.country">
+                {{ u.location?.city }}{{ u.location?.city && u.location?.country ? ', ' : ''
+                }}{{ u.location?.country }}
+              </span>
+            </div>
+            <div class="links">
+              <a *ngIf="u.resumeURL" [href]="u.resumeURL" target="_blank" rel="noopener">Resume</a>
+              <a *ngIf="u.portfolioURL" [href]="u.portfolioURL" target="_blank" rel="noopener"
+                >Portfolio</a
+              >
+              <a *ngIf="u.linkedinURL" [href]="u.linkedinURL" target="_blank" rel="noopener"
+                >LinkedIn</a
+              >
+              <a *ngIf="u.githubURL" [href]="u.githubURL" target="_blank" rel="noopener">GitHub</a>
+            </div>
+          </div>
+          <div class="right">
+            <div class="pill" *ngIf="u.experienceLevel">{{ u.experienceLevel }}</div>
+            <div class="phone" *ngIf="u.phoneNumber">{{ u.phoneNumber }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #notFound>
+    <p style="color: gray">Job not found.</p>
+  </ng-template>
+</section>

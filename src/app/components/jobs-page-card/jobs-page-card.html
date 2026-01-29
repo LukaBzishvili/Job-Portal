@@ -1,20 +1,29 @@
 <div class="job-card-container">
   <div class="job-card-top">
     <h4>{{ cutText(title, 23) }}</h4>
-    <span>{{ jobType }}</span>
+    <span class="job-type">{{ jobType }}</span>
     <p>Salary: {{ salary }} {{ currency }}</p>
     <div class="employer-details">
-      <img src="/images/google-logo.png" alt="employer-logo" />
+      <div class="logo">
+        @if (company?.logoURL) {
+          <img *ngIf="company?.logoURL" [src]="company?.logoURL!" [alt]="company?.name" />
+        } @else {
+          <span class="initials">{{ initials(company?.name) }}</span>
+        }
+      </div>
       <div class="employer">
-        <h5>{{ company }}</h5>
-        <p>{{ companyLocation }}</p>
+        <h5>{{ company?.name }}</h5>
+        <p>{{ company?.location?.city }}, {{ company?.location?.country }}</p>
       </div>
     </div>
     <div class="card-btns">
       <a [routerLink]="['/vacancy', id]">
         <button class="details">View Details</button>
       </a>
-      <button class="apply">Apply Now</button>
+
+      <button (click)="apply()" class="apply" [disabled]="isApplied" [class.applied]="isApplied">
+        {{ isApplied ? 'Applied' : 'Apply' }}
+      </button>
     </div>
   </div>
 </div>

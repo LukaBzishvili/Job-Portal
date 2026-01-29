@@ -4,40 +4,40 @@
       <h1>Post a job</h1>
       <p>Find the best talent for your company</p>
     </div>
-
     <div class="status error" *ngIf="error">{{ error }}</div>
     <div class="status success" *ngIf="success">{{ success }}</div>
-
-    <!-- ✅ IMPORTANT: all formControlName inputs must be inside this form -->
-    <form *ngIf="form" class="form" [formGroup]="form" (ngSubmit)="submit()">
+    <form class="form" [formGroup]="form" (ngSubmit)="submit()">
       <div class="field full">
-        <label>Job Title</label>
+        <label>Job Title <span class="req">*</span></label>
         <input
           class="input"
           placeholder="Add job title, role vacancies etc"
           formControlName="title"
           [class.invalid]="isInvalid('title')"
         />
+        <small class="error-text" *ngIf="fieldError('title')">{{ fieldError('title') }}</small>
       </div>
-
       <div class="grid-2">
         <div class="field">
           <label>Tags</label>
           <input class="input" placeholder="Job keyword, tags etc." formControlName="tags" />
         </div>
-
         <div class="field">
-          <label>Job Role</label>
-          <select class="input select" formControlName="jobFunction">
+          <label>Job Role <span class="req">*</span></label>
+          <select
+            class="input select"
+            formControlName="jobFunction"
+            [class.invalid]="isInvalid('jobFunction')"
+          >
             <option *ngFor="let f of jobFunctions" [value]="f.value">{{ f.label }}</option>
           </select>
+          <small class="error-text" *ngIf="fieldError('jobFunction')">{{
+            fieldError('jobFunction')
+          }}</small>
         </div>
       </div>
-
-      <!-- ✅ Salary block with currency options -->
       <div class="field full">
         <label>Salary</label>
-
         <div class="salary-row">
           <div class="salary-group">
             <div class="sub-label">Min Salary</div>
@@ -52,7 +52,6 @@
               <span class="currency">{{ selectedCurrency }}</span>
             </div>
           </div>
-
           <div class="salary-group">
             <div class="sub-label">Max Salary</div>
             <div class="salary-input">
@@ -66,43 +65,64 @@
               <span class="currency">{{ selectedCurrency }}</span>
             </div>
           </div>
-
           <div class="salary-group">
-            <div class="sub-label">Currency</div>
-            <select class="input select" formControlName="currency">
-              <option *ngFor="let c of currencyOptions" [value]="c.value">
-                {{ c.label }}
-              </option>
+            <div class="sub-label">Currency <span class="req">*</span></div>
+            <select
+              class="input select"
+              formControlName="currency"
+              [class.invalid]="isInvalid('currency')"
+            >
+              <option *ngFor="let c of currencyOptions" [value]="c.value">{{ c.label }}</option>
             </select>
+            <small class="error-text" *ngIf="fieldError('currency')">{{
+              fieldError('currency')
+            }}</small>
           </div>
         </div>
       </div>
-
       <div class="grid-2">
         <div class="field">
-          <label>Job Type</label>
-          <select class="input select" formControlName="jobType">
+          <label>Job Type <span class="req">*</span></label>
+          <select
+            class="input select"
+            formControlName="jobType"
+            [class.invalid]="isInvalid('jobType')"
+          >
             <option *ngFor="let t of jobTypes" [value]="t.value">{{ t.label }}</option>
           </select>
+          <small class="error-text" *ngIf="fieldError('jobType')">{{
+            fieldError('jobType')
+          }}</small>
         </div>
-
         <div class="field">
-          <label>Work Mode</label>
-          <select class="input select" formControlName="workMode">
+          <label>Work Mode <span class="req">*</span></label>
+          <select
+            class="input select"
+            formControlName="workMode"
+            [class.invalid]="isInvalid('workMode')"
+          >
             <option *ngFor="let w of workModes" [value]="w.value">{{ w.label }}</option>
           </select>
+          <small class="error-text" *ngIf="fieldError('workMode')">{{
+            fieldError('workMode')
+          }}</small>
         </div>
       </div>
-
       <div class="grid-row">
         <div class="field">
-          <label>Job Level</label>
-          <select class="input select" formControlName="experienceLevel">
+          <label>Job Level <span class="req">*</span></label>
+          <select
+            class="input select"
+            formControlName="experienceLevel"
+            [class.invalid]="isInvalid('experienceLevel')"
+          >
             <option *ngFor="let l of experienceLevels" [value]="l.value">{{ l.label }}</option>
           </select>
+          <small class="error-text" *ngIf="fieldError('experienceLevel')">
+            {{ fieldError('experienceLevel') }}
+          </small>
         </div>
       </div>
-
       <div class="field full">
         <label>Location</label>
         <div class="grid-2">
@@ -116,26 +136,25 @@
           </div>
         </div>
       </div>
-
       <div class="field full">
-        <label>Job Link</label>
+        <label>Job Link <span class="req">*</span></label>
         <input
           class="input"
           placeholder="https://example.com/jobs/your-job"
           formControlName="link"
           [class.invalid]="isInvalid('link')"
         />
+        <small class="error-text" *ngIf="fieldError('link')">{{ fieldError('link') }}</small>
       </div>
-
       <div class="field full">
-        <label>Job Description</label>
+        <label>Job Description <span class="req">*</span></label>
         <div class="editor">
           <textarea
             class="editor-area"
             placeholder="Add your description..."
             formControlName="description"
+            [class.invalid]="isInvalid('description')"
           ></textarea>
-
           <div class="toolbar">
             <div class="tool">
               <span class="tool-chip">14</span>
@@ -155,10 +174,12 @@
             <button type="button" class="tool-btn">☺</button>
           </div>
         </div>
+        <small class="error-text" *ngIf="fieldError('description')">
+          {{ fieldError('description') }}
+        </small>
       </div>
-
       <div class="actions">
-        <button class="btn primary" type="submit" [disabled]="loading.isLoading()">
+        <button class="btn primary" type="submit" [disabled]="form.invalid || loading.isLoading()">
           {{ loading.isLoading() ? 'Posting...' : 'Post Job' }}
         </button>
       </div>

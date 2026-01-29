@@ -100,6 +100,11 @@
           }
         }
       }
+
+      .phone-field {
+        border: 1px solid gray;
+        padding: 2px 4px;
+      }
     }
     .bottom-content {
       width: 100%;
@@ -193,7 +198,7 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 850px) {
   .profile-container {
     .profile-content {
       // .save-all-cont {
@@ -203,6 +208,64 @@
       //   }
       // }
       .top-content {
+        // .image-name {
+        // .profile-image-cont {
+        //   .avatar-wrapper {
+        //     img {
+        //     }
+        //     .overlay {
+        //     }
+        //     &:hover .overlay {
+        //     }
+        //   }
+        // }
+        // input {
+        //   width: 90px;
+        // }
+        // }
+        .profession-details {
+          input {
+            width: 90px;
+          }
+        }
+      }
+      .bottom-content {
+        .prior-info,
+        .sec-info {
+          justify-content: center;
+          // .more-detail {
+          //   label {
+          //     input {
+          //     }
+          //     .input-cont {
+          //       input {
+          //       }
+          //       .add-btn {
+          //       }
+          //     }
+          //     .add-more-btn {
+          //     }
+          //   }
+          // }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-container {
+    .profile-content {
+      // .save-all-cont {
+      //   .submit-changes-btn {
+      //     &:disabled {
+      //     }
+      //   }
+      // }
+      .top-content {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         .image-name {
           // .profile-image-cont {
           //   .avatar-wrapper {
@@ -215,12 +278,29 @@
           //   }
           // }
           input {
-            width: 90px;
+            text-align: center;
+            margin: 0;
+            width: 100%;
+            font-size: 35px;
+            margin-bottom: 30px;
           }
         }
         .profession-details {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          border: 1px solid gray;
+          // border-radius: 7px;
+          margin-top: 20px;
+          max-width: 183px;
+          padding: 4px 1px;
           input {
-            width: 90px;
+            text-align: start;
+            font-size: 20px;
+            width: auto;
+            min-width: 2ch;
+            max-width: 100%;
           }
         }
       }

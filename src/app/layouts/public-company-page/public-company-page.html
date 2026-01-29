@@ -1,0 +1,93 @@
+@if (isLoading()) {
+  <app-loading-screen [fullscreen]="true" text="Loading company..." [dimBackground]="true" />
+} @else {
+  <section class="company-page-container">
+    <div class="company-left">
+      @if (company()) {
+        <div class="company-card">
+          <div class="company-header">
+            <h2 class="company-name">{{ company()?.name }}</h2>
+            <div class="company-logo">
+              @if (company()?.logoURL) {
+                <img
+                  [src]="company()?.logoURL!"
+                  [alt]="company()?.name + ' logo'"
+                  (error)="logoError($event)"
+                />
+              }
+              <span class="initials">{{ initials(company()?.name || '') }}</span>
+            </div>
+            @if (company()?.verified) {
+              <span class="badge">Verified</span>
+            }
+          </div>
+          <div class="company-meta">
+            @if (company()?.industry) {
+              <p><b>Industry:</b> {{ company()?.industry }}</p>
+            }
+            @if (company()?.size) {
+              <p><b>Company size:</b> {{ company()?.size }}</p>
+            }
+
+            @if (company()?.location?.city || company()?.location?.country) {
+              <p>
+                <b>Location:</b>
+                {{ company()?.location?.city || ''
+                }}{{ company()?.location?.city && company()?.location?.country ? ', ' : '' }}
+                {{ company()?.location?.country || '' }}
+              </p>
+            }
+
+            @if (company()?.website) {
+              <p class="link-row">
+                <b>Website:</b>
+                <a [href]="company()?.website" target="_blank" rel="noopener noreferrer">
+                  {{ company()?.website }}
+                </a>
+              </p>
+            }
+          </div>
+          <!-- <div class="company-logo" *ngIf="company()?.logoURL">
+            <img [src]="company()?.logoURL" [alt]="company()?.name + ' logo'" />
+          </div> -->
+          <div class="company-desc">
+            <h4>About</h4>
+            <p>
+              {{ company()?.description || 'No description yet.' }}
+            </p>
+          </div>
+        </div>
+      } @else {
+        <div class="company-card">
+          <h3>Company not found</h3>
+          <p>This company profile does not exist or is not public.</p>
+        </div>
+      }
+    </div>
+    <div class="company-right">
+      <h2>Open vacancies</h2>
+      @if (!jobs().length) {
+        <p>No jobs posted yet.</p>
+      } @else {
+        <ul class="jobs-list">
+          @for (job of jobs(); track job.id) {
+            <li class="company-job">
+              <app-company-job-card
+                [title]="job.title"
+                [jobType]="job.jobType"
+                [salary]="job.salary"
+                [applicants]="job.applicants"
+                [link]="job.link"
+                [company]="job.company"
+                [createdAt]="job.createdAt"
+                [updatedAt]="job.updatedAt"
+                [id]="job.id"
+                [currency]="job.currency"
+              ></app-company-job-card>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </section>
+}

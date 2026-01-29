@@ -139,6 +139,12 @@
             justify-content: space-evenly;
             flex-wrap: wrap;
             margin-bottom: 30px;
+            button {
+              border: none;
+              width: fit-content;
+              background-color: transparent;
+              cursor: pointer;
+            }
           }
           .no-account {
             width: 100%;

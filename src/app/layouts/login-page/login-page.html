@@ -46,15 +46,20 @@
             <h3>Or login with</h3>
           </div>
           <div class="other-login-ways">
-            <a href="#">
-              <img src="/images/google-login.png" alt="other-login" />
-            </a>
-            <a href="#">
+            <button
+              type="button"
+              class="oauth-btn"
+              (click)="loginWithGoogle()"
+              [disabled]="isLoading()"
+            >
+              <img src="/images/google-login.png" alt="Google" />
+            </button>
+            <!-- <a href="#">
               <img src="/images/facebook-login.png" alt="other-login" />
             </a>
             <a href="#">
               <img src="/images/linkedin-login.png" alt="other-login" />
-            </a>
+            </a> -->
           </div>
           <div class="no-account">
             <p>Don't have an account? <a href="register">Register</a></p>

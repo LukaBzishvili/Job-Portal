@@ -1,27 +1,30 @@
 import { Component, Input } from '@angular/core';
-import { JobType } from '../../models/firestore';
+import { Company, JobType } from '../../models/firestore';
 import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-company-job-card',
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './company-job-card.html',
   styleUrl: './company-job-card.scss',
 })
 export class CompanyJobCard {
   constructor(private router: Router) {}
 
-  @Input() title: string | undefined;
-  @Input() jobType: JobType | undefined;
-  @Input() salary: number | string | undefined;
-  @Input() companyLocation: string | undefined;
-  @Input() applicants: string[] | undefined;
-  @Input() link: string | undefined;
-  @Input() company: string | undefined;
+  @Input() title?: string;
+  @Input() jobType?: JobType;
+  @Input() salary?: number | string;
+  @Input() applicants?: string[];
+  @Input() link?: string;
   @Input() createdAt?: any;
   @Input() updatedAt?: any;
   @Input() id?: string;
-  @Input() currency: string | undefined;
+  @Input() currency?: string;
+  // @Input() company?: string;
+  // @Input() companyLocation?: string;
+  // @Input() logoURL?: string;
+  @Input() company?: Company;
 
   cutText(text: string | undefined, maxLength: number): string {
     if (!text) return '';
@@ -37,5 +40,13 @@ export class CompanyJobCard {
     if (this.link) {
       this.router.navigateByUrl(this.link);
     }
+  }
+
+  initials(name: string | undefined = '') {
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    const first = parts[0][0] ?? '';
+    const last = parts.length > 1 ? parts[parts.length - 1][0] : '';
+    return (first + last).toUpperCase();
   }
 }

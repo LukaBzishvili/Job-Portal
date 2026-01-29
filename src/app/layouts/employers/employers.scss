@@ -207,21 +207,21 @@
 }
 
 @media (max-width: 980px) {
-  .employers .grid {
+  .employers-container .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 560px) {
-  .employers {
+  .employers-container {
     padding: 14px;
   }
 
-  .employers .grid {
+  .employers-container .grid {
     grid-template-columns: 1fr;
   }
 
-  .employers .header .search {
+  .employers-container .header .search {
     min-width: 180px;
   }
 }

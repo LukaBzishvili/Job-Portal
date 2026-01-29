@@ -96,8 +96,8 @@
           border: 1px solid #6300b3;
         }
       }
-      .other-login {
-        .other-login-text {
+      .other-register {
+        .other-register-text {
           height: 1px;
           background-color: gray;
           margin: 55px 0;
@@ -116,13 +116,19 @@
             padding: 0 10px;
           }
         }
-        .other-login-ways {
+        .other-register-ways {
           width: 100%;
           display: flex;
           align-items: center;
           justify-content: space-evenly;
           flex-wrap: wrap;
           margin-bottom: 30px;
+          button {
+            border: none;
+            width: fit-content;
+            background-color: transparent;
+            cursor: pointer;
+          }
         }
         .no-account {
           width: 100%;

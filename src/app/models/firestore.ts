@@ -13,13 +13,18 @@ export interface Job {
 
   companyId: string;
   title: string;
-  company: string;
-  companyLocation: string;
+
+  company: Company;
+
+  location: { country: string; city: string };
+
   salary: number | string;
   link: string;
   applicants: string[];
   description: string;
   currency: Currency;
+
+  tags: string[];
 
   jobFunction: JobFunction;
   experienceLevel: ExperienceLevel;

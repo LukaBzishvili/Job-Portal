@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Job } from '../../models/firestore';
 import { Firestore } from '../../services/firestore';
 import { LoadingService } from '../../services/loading-service';
@@ -17,20 +17,38 @@ import { auth } from '../../firebase/firebase';
 export class VacancyPage implements OnInit {
   vacancy: Job | null = null;
   auth = auth;
+  canViewApplicants = false;
 
   constructor(
     private fs: Firestore,
     private route: ActivatedRoute,
+    private router: Router,
+
     public loading: LoadingService,
   ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
 
-    this.loading.track(this.fs.getSpecificJob(id)).then((job) => {
+    this.loading.track(this.fs.getSpecificJob(id)).then(async (job) => {
       this.vacancy = job;
       console.log(job);
+
+      const profile = await this.fs.getCurrentUserProfile();
+      const accountType = (profile as any)?.accountType as 'candidate' | 'company' | undefined;
+      const viewerCompanyId = (profile as any)?.companyId as string | undefined;
+
+      this.canViewApplicants =
+        accountType === 'company' &&
+        !!viewerCompanyId &&
+        !!job?.companyId &&
+        viewerCompanyId === job.companyId;
     });
+  }
+
+  goToApplicants() {
+    if (!this.vacancy?.id) return;
+    this.router.navigate(['/vacancy', this.vacancy.id, 'applicants']);
   }
 
   formatDate(value: any): string {

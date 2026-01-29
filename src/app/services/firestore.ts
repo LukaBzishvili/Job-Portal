@@ -14,6 +14,7 @@ import {
   getDoc,
   writeBatch,
   where,
+  documentId,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebase';
 import { Company, Job, RegisterWithCompanyPayload, User } from '../models/firestore';
@@ -153,10 +154,10 @@ export class Firestore {
           (maxSalary == null || jobSalaryNum <= maxSalary));
 
       const title = (job.title ?? '').toString().toLowerCase();
-      const company = (job.company ?? '').toString().toLowerCase();
+      const company = (job.company.name ?? '').toString().toLowerCase();
       const matchesSearch = !q || title.includes(q) || company.includes(q);
 
-      const loc = (job.companyLocation ?? (job as any).location ?? '').toString().toLowerCase();
+      const loc = (job.company.location ?? (job as any).location ?? '').toString().toLowerCase();
       const matchesLocation = !locationQ || loc.includes(locationQ);
 
       return (
@@ -172,7 +173,7 @@ export class Firestore {
   }
 
   getSpecificJob(jobId: string): Promise<Job | null> {
-    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+    const jobRef = this.jobDocRef(jobId);
     return getDoc(jobRef).then((snap) => {
       if (!snap.exists()) return null;
       return { id: snap.id, ...(snap.data() as Omit<Job, 'id'>) };
@@ -189,6 +190,22 @@ export class Firestore {
 
     return snap.docs.map((d) => {
       const data = d.data() as Omit<Company, 'id'>;
+      return { id: d.id, ...data };
+    });
+  }
+
+  async getCompanyById(companyId: string): Promise<Company | null> {
+    const snap = await getDoc(doc(db, 'companies', companyId));
+    if (!snap.exists()) return null;
+    return { id: snap.id, ...(snap.data() as Omit<Company, 'id'>) };
+  }
+
+  async listJobsByCompanyId(companyId: string): Promise<Job[]> {
+    const q = query(this.jobsListRef(), where('companyId', '==', companyId));
+    const snap = await getDocs(q);
+
+    return snap.docs.map((d) => {
+      const data = d.data() as Omit<Job, 'id'>;
       return { id: d.id, ...data };
     });
   }
@@ -300,6 +317,10 @@ export class Firestore {
     return collection(db, 'Jobs', 'Cards', 'list');
   }
 
+  private jobDocRef(jobId: string) {
+    return doc(db, 'Jobs', 'Cards', 'list', jobId);
+  }
+
   async addJob(job: Omit<Job, 'createdAt' | 'updatedAt'>) {
     return addDoc(this.jobsListRef(), {
       ...job,
@@ -310,8 +331,7 @@ export class Firestore {
   }
 
   async setJob(jobId: string, job: Omit<Job, 'createdAt' | 'updatedAt'>) {
-    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
-    return setDoc(jobRef, {
+    return setDoc(this.jobDocRef(jobId), {
       ...job,
       applicants: job.applicants ?? [],
       createdAt: serverTimestamp(),
@@ -323,7 +343,7 @@ export class Firestore {
     const user = auth.currentUser;
     if (!user) throw new Error('Not authenticated');
 
-    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+    const jobRef = this.jobDocRef(jobId);
     const userRef = doc(db, 'users', user.uid);
 
     const batch = writeBatch(db);
@@ -342,16 +362,77 @@ export class Firestore {
   }
 
   async addApplicant(jobId: string, userId: string) {
-    const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
-    return updateDoc(jobRef, {
+    return updateDoc(this.jobDocRef(jobId), {
       applicants: arrayUnion(userId),
       updatedAt: serverTimestamp(),
     });
   }
 
+  // async setJob(jobId: string, job: Omit<Job, 'createdAt' | 'updatedAt'>) {
+  //   const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+  //   return setDoc(jobRef, {
+  //     ...job,
+  //     applicants: job.applicants ?? [],
+  //     createdAt: serverTimestamp(),
+  //     updatedAt: serverTimestamp(),
+  //   });
+  // }
+
+  // async applyToJob(jobId: string) {
+  //   const user = auth.currentUser;
+  //   if (!user) throw new Error('Not authenticated');
+
+  //   const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+  //   const userRef = doc(db, 'users', user.uid);
+
+  //   const batch = writeBatch(db);
+
+  //   batch.update(jobRef, {
+  //     applicants: arrayUnion(user.uid),
+  //     updatedAt: serverTimestamp(),
+  //   });
+
+  //   batch.update(userRef, {
+  //     appliedJobs: arrayUnion(jobId),
+  //     updatedAt: serverTimestamp(),
+  //   });
+
+  //   await batch.commit();
+  // }
+
+  // async addApplicant(jobId: string, userId: string) {
+  //   const jobRef = doc(db, 'Jobs', 'Cards', 'list', jobId);
+  //   return updateDoc(jobRef, {
+  //     applicants: arrayUnion(userId),
+  //     updatedAt: serverTimestamp(),
+  //   });
+  // }
+
   // Users
   private userDocRef(uid: string) {
     return doc(db, 'users', uid);
+  }
+
+  async getUsersByIds(uids: string[]): Promise<User[]> {
+    const ids = Array.from(new Set((uids ?? []).filter(Boolean)));
+    if (!ids.length) return [];
+
+    const chunks: string[][] = [];
+    for (let i = 0; i < ids.length; i += 10) chunks.push(ids.slice(i, i + 10));
+
+    const results: User[] = [];
+
+    for (const chunk of chunks) {
+      const q = query(collection(db, 'users'), where(documentId(), 'in', chunk));
+      const snap = await getDocs(q);
+
+      snap.docs.forEach((d) => {
+        results.push({ id: d.id, ...(d.data() as Omit<User, 'id'>) });
+      });
+    }
+
+    const byId = new Map(results.map((u) => [u.id, u]));
+    return ids.map((id) => byId.get(id)).filter(Boolean) as User[];
   }
 
   async addUser(

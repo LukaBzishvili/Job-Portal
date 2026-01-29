@@ -5,6 +5,8 @@ import {
   signOut,
   onAuthStateChanged,
   User,
+  signInWithPopup,
+  GoogleAuthProvider,
 } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 
@@ -21,9 +23,7 @@ export class Auth {
   }
 
   onAuthStateChange(callback: (user: User | null) => void): () => void {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      callback(user);
-    });
+    const unsubscribe = onAuthStateChanged(auth, (user) => callback(user));
     return unsubscribe;
   }
 
@@ -35,6 +35,14 @@ export class Auth {
   async signIn(email: string, password: string): Promise<User> {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
+  }
+
+  async signUpWithGoogle(): Promise<User> {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+
+    const cred = await signInWithPopup(auth, provider);
+    return cred.user;
   }
 
   signOutUser(): Promise<void> {

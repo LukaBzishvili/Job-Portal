@@ -10,6 +10,8 @@ import { CompanyPage } from './layouts/company-page/company-page';
 import { VacancyPage } from './layouts/vacancy-page/vacancy-page';
 import { AddJobPage } from './layouts/add-job-page/add-job-page';
 import { Employers } from './layouts/employers/employers';
+import { PublicCompanyPage } from './layouts/public-company-page/public-company-page';
+import { ApplicantsPage } from './layouts/applicants-page/applicants-page';
 
 export const routes: Routes = [
   { path: '', component: Main },
@@ -39,4 +41,14 @@ export const routes: Routes = [
   },
   { path: 'post-job', component: AddJobPage, canActivate: [companyGuard] },
   { path: 'employers', component: Employers },
+  {
+    path: 'public-company/:id',
+    component: PublicCompanyPage,
+  },
+
+  {
+    path: 'vacancy/:jobId/applicants',
+    component: ApplicantsPage,
+    canActivate: [companyGuard],
+  },
 ];

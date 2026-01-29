@@ -74,7 +74,6 @@
             />
             Candidate
           </label>
-
           <label class="radio">
             <input
               type="radio"
@@ -86,7 +85,6 @@
             Company
           </label>
         </div>
-
         @if (registerModel().accountType === 'company') {
           <div class="company-name-input-cont">
             <label>
@@ -97,7 +95,6 @@
                 placeholder="Enter company name"
               />
             </label>
-
             @if (registerForm.companyName().touched() && registerForm.companyName().invalid()) {
               <ul class="error">
                 @for (error of registerForm.companyName().errors(); track error) {
@@ -108,20 +105,25 @@
           </div>
         }
         <button type="submit" class="register-btn">Register</button>
-        <div class="other-login">
-          <div class="other-login-text">
+        <div class="other-register">
+          <div class="other-register-text">
             <h3>Or sign up with</h3>
           </div>
-          <div class="other-login-ways">
-            <a href="#">
-              <img src="/images/google-login.png" alt="other-login" />
-            </a>
-            <a href="#">
+          <div class="other-register-ways">
+            <button
+              type="button"
+              class="oauth-btn"
+              (click)="signUpWithGoogle()"
+              [disabled]="isLoading()"
+            >
+              <img src="/images/google-login.png" alt="Google" />
+            </button>
+            <!-- <a href="#">
               <img src="/images/facebook-login.png" alt="other-login" />
             </a>
             <a href="#">
               <img src="/images/linkedin-login.png" alt="other-login" />
-            </a>
+            </a> -->
           </div>
           <div class="no-account">
             <p>Already have an account? <a href="login">Sign in</a></p>

@@ -9,10 +9,16 @@
     </div>
     <div class="job-main-middle">
       <div class="employer-details">
-        <img src="/images/google-logo.png" alt="employer-logo" />
+        <div class="logo">
+          @if (company?.logoURL) {
+            <img *ngIf="company?.logoURL" [src]="company?.logoURL!" [alt]="company?.name" />
+          } @else {
+            <span class="initials">{{ initials(company?.name) }}</span>
+          }
+        </div>
         <div class="employer">
-          <h5>{{ company }}</h5>
-          <p>{{ companyLocation }}</p>
+          <h5>{{ company?.name }}</h5>
+          <p>{{ company?.location?.city }}, {{ company?.location?.country }}</p>
         </div>
       </div>
       <div class="applicants">

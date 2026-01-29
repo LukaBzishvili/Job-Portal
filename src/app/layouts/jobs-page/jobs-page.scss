@@ -233,14 +233,15 @@
   }
 }
 
-@media only screen and (max-width: 820px) {
+@media only screen and (max-width: 900px) {
   .jobs-page-container {
     .jobs-catalog {
       flex-direction: column;
       .jobs-filter {
         max-width: none;
-        margin-bottom: 20px;
         width: 100%;
+        margin: 0;
+        margin-bottom: 20px;
         .top-content {
           width: 100%;
           padding: 0 30px;

@@ -21,6 +21,7 @@ export class Employers implements OnInit {
 
   async ngOnInit() {
     await this.loadCompanies();
+    // console.log('Companies loaded:', this.companies()[1].logoURL);
   }
 
   async loadCompanies() {

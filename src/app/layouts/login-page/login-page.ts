@@ -14,6 +14,8 @@ export class LoginPage {
   private auth = inject(AuthService);
   private router = inject(Router);
 
+  isLoading = signal(false);
+
   loginModel = signal<LoginProps>({
     email: '',
     password: '',
@@ -28,15 +30,33 @@ export class LoginPage {
 
   onSubmit(event: Event) {
     event.preventDefault();
+
+    this.isLoading.set(true);
+
     submit(this.loginForm, async () => {
       const credentials = this.loginModel();
-      console.log('Logging with: ', credentials);
+
       try {
         await this.auth.signIn(credentials.email, credentials.password);
         await this.router.navigate(['/']);
       } catch (error) {
         console.error('Error during sign in:', error);
+      } finally {
+        this.isLoading.set(false);
       }
     });
+  }
+
+  async loginWithGoogle(): Promise<void> {
+    this.isLoading.set(true);
+
+    try {
+      await this.auth.signUpWithGoogle();
+      await this.router.navigate(['/']);
+    } catch (error) {
+      console.error('Google login failed:', error);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

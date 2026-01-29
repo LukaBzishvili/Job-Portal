@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { Firestore } from '../../services/firestore';
 import { LoadingService } from '../../services/loading-service';
 import {
@@ -10,6 +16,7 @@ import {
   JobType,
   WorkMode,
   Currency,
+  Company,
 } from '../../models/firestore';
 
 @Component({
@@ -60,13 +67,12 @@ export class AddJobPage implements OnInit {
   ];
 
   companyId: string | null = null;
-  companyName: string | null = null;
-  companyLocationText: string | null = null;
+  company: Company | null = null;
 
   error: string | null = null;
   success: string | null = null;
 
-  form!: FormGroup;
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -99,22 +105,50 @@ export class AddJobPage implements OnInit {
     try {
       const company = await this.loading.track(this.fs.getCurrentCompany());
       const companyId = await this.loading.track(this.fs.getCurrentCompanyId());
-
       this.companyId = companyId;
-      this.companyName = company?.name ?? null;
-
-      const country = company?.location?.country ?? null;
-      const city = company?.location?.city ?? null;
-      this.companyLocationText = [city, country].filter(Boolean).join(', ') || null;
-
-      if (country) this.form.patchValue({ country });
-      if (city) this.form.patchValue({ city });
+      this.company = company;
     } catch (e: any) {
       this.error = e?.message ?? 'Failed to load company profile.';
     }
   }
 
-  private buildSalary(minRaw: any, maxRaw: any): number | string {
+  ctrl(name: string): AbstractControl | null {
+    return this.form.get(name);
+  }
+
+  isInvalid(name: string): boolean {
+    const c = this.ctrl(name);
+    return !!c && c.touched && c.invalid;
+  }
+
+  fieldError(name: string): string | null {
+    const c = this.ctrl(name);
+    if (!c || !c.touched || !c.errors) return null;
+
+    if (c.errors['required']) return 'This field is required.';
+    if (c.errors['minlength']) {
+      const req = c.errors['minlength']?.requiredLength;
+      return `Minimum ${req} characters required.`;
+    }
+    if (c.errors['maxlength']) {
+      const req = c.errors['maxlength']?.requiredLength;
+      return `Maximum ${req} characters allowed.`;
+    }
+    if (c.errors['pattern']) return 'Please enter a valid value.';
+    return 'Invalid value.';
+  }
+
+  private scrollToFirstInvalid(): void {
+    const el = document.querySelector('.input.invalid, .editor-area.invalid, select.input.invalid');
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    (el as HTMLElement | null)?.focus?.();
+  }
+
+  get selectedCurrency(): Currency {
+    return (this.form.value.currency as Currency) ?? 'GEL';
+  }
+
+  private buildSalary(minRaw: any, maxRaw: any): number | string | null {
     const min = Number(String(minRaw ?? '').trim());
     const max = Number(String(maxRaw ?? '').trim());
 
@@ -125,52 +159,46 @@ export class AddJobPage implements OnInit {
     if (minOk) return min;
     if (maxOk) return max;
 
-    return '—';
-  }
-
-  private buildCompanyLocation(): string {
-    const country = (this.form.value.country ?? '').toString().trim();
-    const city = (this.form.value.city ?? '').toString().trim();
-    const fromForm = [city, country].filter(Boolean).join(', ');
-    return fromForm || this.companyLocationText || '—';
-  }
-
-  isInvalid(name: keyof typeof this.form.controls): boolean {
-    const c = this.form.controls[name];
-    return c.touched && c.invalid;
-  }
-
-  get selectedCurrency(): Currency {
-    return (this.form.value.currency as Currency) ?? 'GEL';
+    return null;
   }
 
   async submit(): Promise<void> {
     this.error = null;
     this.success = null;
 
-    if (!this.companyId) {
-      this.error = 'No companyId linked to this user. Create/attach a company account first.';
+    if (!this.companyId || !this.company) {
+      this.error = 'Company profile is not loaded. Cannot add job.';
       return;
     }
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.error = 'Please fix the highlighted fields before posting the job.';
+      this.scrollToFirstInvalid();
       return;
     }
 
     const salary = this.buildSalary(this.form.value.minSalary, this.form.value.maxSalary);
 
-    const jobPayload: Omit<Job, 'createdAt' | 'updatedAt'> = {
+    const jobPayload: Omit<Job, 'createdAt' | 'updatedAt'> & { tags?: string } = {
       companyId: this.companyId,
       title: (this.form.value.title ?? '').trim(),
-      company: this.companyName ?? '—',
-      companyLocation: this.buildCompanyLocation(),
+      company: this.company,
 
-      salary,
+      location:
+        this.form.value.country || this.form.value.city
+          ? {
+              country: (this.form.value.country ?? '').trim(),
+              city: (this.form.value.city ?? '').trim(),
+            }
+          : { country: '', city: '' },
+
+      salary: salary ?? '',
       currency: this.selectedCurrency,
 
       link: (this.form.value.link ?? '').trim(),
       applicants: [],
+      tags: (this.form.value.tags ?? '').trim(),
 
       jobFunction: this.form.value.jobFunction!,
       experienceLevel: this.form.value.experienceLevel!,
@@ -181,22 +209,31 @@ export class AddJobPage implements OnInit {
     };
 
     try {
-      const docRef = await this.loading.track(this.fs.addJob(jobPayload));
+      const docRef = await this.loading.track(this.fs.addJob(jobPayload as any));
       this.success = 'Job posted successfully!';
-      // console.log('Job created with id:', docRef.id);
+      console.log('Job created with id:', docRef.id);
 
-      this.form.patchValue({
+      this.form.reset({
         title: '',
         tags: '',
+        jobFunction: 'marketing',
+        jobType: 'full-time',
+        workMode: 'remote',
+        experienceLevel: 'junior',
         minSalary: '',
         maxSalary: '',
+        currency: 'GEL',
+        country: '',
+        city: '',
         link: '',
         description: '',
       });
+
       this.form.markAsPristine();
       this.form.markAsUntouched();
     } catch (e: any) {
-      this.error = e?.message ?? 'Failed to post job.';
+      console.error('addJob failed:', e);
+      this.error = e?.message ?? e?.code ?? 'Failed to post job.';
     }
   }
 }
