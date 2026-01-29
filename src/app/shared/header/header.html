@@ -9,13 +9,25 @@
     <div class="header-nav">
       <nav>
         <ul>
-          <li><a routerLink="/">Home</a></li>
-          <li><a routerLink="/jobs">Find Jobs</a></li>
-          <li><a routerLink="/employers">Employers</a></li>
-          <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
+          <li routerLinkActive="active-li" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/">Home</a>
+          </li>
+
+          <li routerLinkActive="active-li">
+            <a routerLink="/jobs">Find Jobs</a>
+          </li>
+
+          <li routerLinkActive="active-li">
+            <a routerLink="/employers">Employers</a>
+          </li>
+
+          <li *ngIf="isLoggedIn && !profileLoading() && isCompany()" routerLinkActive="active-li">
             <a routerLink="/company">Admin</a>
           </li>
-          <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
+
+          <li *ngIf="isLoggedIn" routerLinkActive="active-li">
+            <a routerLink="/profile">Profile</a>
+          </li>
         </ul>
       </nav>
     </div>
@@ -46,15 +58,17 @@
       <div class="hamburger-nav">
         <nav>
           <ul>
-            <li><a routerLink="/">Home</a></li>
-            <li><a routerLink="/jobs">Find Jobs</a></li>
-            <li><a routerLink="/employers">Employers</a></li>
-            <li *ngIf="isLoggedIn && !profileLoading() && isCompany()">
-              <a routerLink="/company">Admin</a>
+            <li routerLinkActive="active-li" [routerLinkActiveOptions]="{ exact: true }">
+              <a routerLink="/">Home</a>
             </li>
-            <li><a routerLink="#">About Us</a></li>
-            <li><a routerLink="#">Contact Us</a></li>
-            <li *ngIf="isLoggedIn"><a routerLink="/profile">Profile</a></li>
+            <li routerLinkActive="active-li">
+              <a routerLink="/jobs">Find Jobs</a>
+            </li>
+            <!-- <li><a routerLink="#">About Us</a></li> -->
+            <!-- <li><a routerLink="#">Contact Us</a></li> -->
+            <li *ngIf="isLoggedIn" routerLinkActive="active-li">
+              <a routerLink="/profile">Profile</a>
+            </li>
             <li>
               <a *ngIf="!isLoggedIn" routerLink="/login">
                 <button class="auth-btn">Login</button>
