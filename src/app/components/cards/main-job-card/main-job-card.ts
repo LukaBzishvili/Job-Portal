@@ -36,7 +36,7 @@ export class MainJobCard implements OnInit {
 
   ngOnInit() {
     this.checkIfApplied();
-    console.log(this.company);
+    // console.log(this.company);
   }
 
   private checkIfApplied() {

@@ -32,7 +32,7 @@ export class VacancyPage implements OnInit {
 
     this.loading.track(this.fs.getSpecificJob(id)).then(async (job) => {
       this.vacancy = job;
-      console.log(job);
+      // console.log(job);
 
       const profile = await this.fs.getCurrentUserProfile();
       const accountType = (profile as any)?.accountType as 'candidate' | 'company' | undefined;

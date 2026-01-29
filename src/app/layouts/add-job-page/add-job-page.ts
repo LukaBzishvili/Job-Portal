@@ -211,7 +211,7 @@ export class AddJobPage implements OnInit {
     try {
       const docRef = await this.loading.track(this.fs.addJob(jobPayload as any));
       this.success = 'Job posted successfully!';
-      console.log('Job created with id:', docRef.id);
+      // console.log('Job created with id:', docRef.id);
 
       this.form.reset({
         title: '',
