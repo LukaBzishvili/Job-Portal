@@ -57,3 +57,7 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Environment files
+
+To run this project successfully you have to create src/environments folder in which you have to add environment.development.ts and environment.ts files where you can add your own firebase environment code.
