@@ -10,6 +10,7 @@
             <div class="company-logo">
               @if (company()?.logoURL) {
                 <img
+                  loading="lazy"
                   [src]="company()?.logoURL!"
                   [alt]="company()?.name + ' logo'"
                   (error)="logoError($event)"

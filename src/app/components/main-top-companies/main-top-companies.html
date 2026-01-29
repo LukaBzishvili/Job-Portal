@@ -15,7 +15,7 @@
       class="company-cont"
       *ngFor="let company of companies"
     >
-      <img [src]="company.logoURL" [alt]="company.name" />
+      <img loading="lazy" [src]="company.logoURL" [alt]="company.name" />
     </a>
   </div>
 </section>

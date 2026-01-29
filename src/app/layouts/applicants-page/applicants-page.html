@@ -23,7 +23,7 @@
       <div class="grid" *ngIf="applicants.length">
         <div class="applicant" *ngFor="let u of applicants">
           <div class="avatar">
-            <img *ngIf="u.photoURL" [src]="u.photoURL" alt="avatar" />
+            <img loading="lazy" *ngIf="u.photoURL" [src]="u.photoURL" alt="avatar" />
             <div *ngIf="!u.photoURL" class="fallback">
               {{ (u.fullName || 'U').slice(0, 1).toUpperCase() }}
             </div>

@@ -33,7 +33,13 @@
           <div class="top">
             <div class="logo">
               @if (c.logoURL) {
-                <img *ngIf="c.logoURL" [src]="c.logoURL!" [alt]="c.name + ' logo'" (error)="logoError($event)" />
+                <img
+                  loading="lazy"
+                  *ngIf="c.logoURL"
+                  [src]="c.logoURL!"
+                  [alt]="c.name + ' logo'"
+                  (error)="logoError($event)"
+                />
               } @else {
                 <span class="initials">{{ initials(c.name) }}</span>
               }

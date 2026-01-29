@@ -11,7 +11,12 @@
       <div class="employer-details">
         <div class="logo">
           @if (company?.logoURL) {
-            <img *ngIf="company?.logoURL" [src]="company?.logoURL!" [alt]="company?.name" />
+            <img
+              loading="lazy"
+              *ngIf="company?.logoURL"
+              [src]="company?.logoURL!"
+              [alt]="company?.name"
+            />
           } @else {
             <span class="initials">{{ initials(company?.name) }}</span>
           }

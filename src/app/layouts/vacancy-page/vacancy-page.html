@@ -12,6 +12,7 @@
           <div class="logo">
             @if (v.company.logoURL) {
               <img
+                loading="lazy"
                 *ngIf="v.company.logoURL"
                 [src]="v.company.logoURL!"
                 [alt]="v.company.name + ' logo'"
