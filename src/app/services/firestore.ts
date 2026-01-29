@@ -15,6 +15,7 @@ import {
   writeBatch,
   where,
   documentId,
+  increment,
 } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebase';
 import { Company, Job, RegisterWithCompanyPayload, User } from '../models/firestore';
@@ -59,6 +60,32 @@ export class Firestore {
     });
   }
 
+  companiesListRef() {
+    return collection(db, 'companies');
+  }
+
+  // async listMainPageCompanies(): Promise<Company[]> {
+  //   const q = query(this.companiesListRef(), orderBy('createdAt', 'desc'), limit(3));
+
+  //   const snap = await getDocs(q);
+
+  //   return snap.docs.map((d) => {
+  //     const data = d.data() as Omit<Company, 'id'>;
+  //     return { id: d.id, ...data };
+  //   });
+  // }
+
+  async listMainPageCompanies(): Promise<Company[]> {
+    const q = query(this.companiesListRef(), orderBy('size', 'desc'), limit(5));
+
+    const snap = await getDocs(q);
+
+    return snap.docs.map((d) => {
+      const data = d.data() as Omit<Company, 'id'>;
+      return { id: d.id, ...data };
+    });
+  }
+
   async getCurrentCompany(): Promise<Company | null> {
     const profile = await this.getCurrentUserProfile();
     const companyId = (profile as any)?.companyId;
@@ -94,8 +121,19 @@ export class Firestore {
     });
   }
 
+  // async listMainPageJobs(): Promise<Job[]> {
+  //   const q = query(this.jobsListRef(), orderBy('createdAt', 'desc'), limit(3));
+
+  //   const snap = await getDocs(q);
+
+  //   return snap.docs.map((d) => {
+  //     const data = d.data() as Omit<Job, 'id'>;
+  //     return { id: d.id, ...data };
+  //   });
+  // }
+
   async listMainPageJobs(): Promise<Job[]> {
-    const q = query(this.jobsListRef(), orderBy('createdAt', 'desc'), limit(3));
+    const q = query(this.jobsListRef(), orderBy('applicants', 'desc'), limit(3));
 
     const snap = await getDocs(q);
 
@@ -321,13 +359,31 @@ export class Firestore {
     return doc(db, 'Jobs', 'Cards', 'list', jobId);
   }
 
+  // async addJob(job: Omit<Job, 'createdAt' | 'updatedAt'>) {
+  //   return addDoc(this.jobsListRef(), {
+  //     ...job,
+  //     applicants: job.applicants ?? [],
+  //     createdAt: serverTimestamp(),
+  //     updatedAt: serverTimestamp(),
+  //   });
+  // }
+
   async addJob(job: Omit<Job, 'createdAt' | 'updatedAt'>) {
-    return addDoc(this.jobsListRef(), {
+    const jobRef = await addDoc(this.jobsListRef(), {
       ...job,
       applicants: job.applicants ?? [],
+      applicantsCount: job.applicants?.length ?? 0,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     });
+
+    const companyRef = doc(db, 'companies', job.companyId);
+    await updateDoc(companyRef, {
+      jobsCount: increment(1),
+      updatedAt: serverTimestamp(),
+    });
+
+    return jobRef;
   }
 
   async setJob(jobId: string, job: Omit<Job, 'createdAt' | 'updatedAt'>) {

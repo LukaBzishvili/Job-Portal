@@ -5,10 +5,17 @@
     <div class="line"></div>
   </div>
   <div class="top-companies">
-    <img src="/images/microsoft.png" alt="company" />
+    <!-- <img src="/images/microsoft.png" alt="company" />
     <img src="/images/ibm.png" alt="company" />
     <img src="/images/youtube.png" alt="company" />
     <img src="/images/google.png" alt="company" />
-    <img src="/images/flipkart.png" alt="company" />
+    <img src="/images/flipkart.png" alt="company" /> -->
+    <a
+      [routerLink]="'/public-company/' + company.id"
+      class="company-cont"
+      *ngFor="let company of companies"
+    >
+      <img [src]="company.logoURL" [alt]="company.name" />
+    </a>
   </div>
 </section>

@@ -15,10 +15,8 @@ export class Header {
   private authService = inject(Auth);
   private userStore = inject(UserStore);
 
-  // fast auth state comes from App (no flicker)
   @Input() isLoggedIn = false;
 
-  // company role comes from Firestore profile (via store)
   isCompany = this.userStore.isCompany;
   profileLoading = this.userStore.loading;
 
